@@ -6,7 +6,7 @@
 #    By: tvermeil <tvermeil@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2015/12/18 19:13:31 by tvermeil          #+#    #+#              #
-#    Updated: 2016/05/10 09:50:14 by tvermeil         ###   ########.fr        #
+#    Updated: 2016/05/11 15:50:22 by tvermeil         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -30,25 +30,7 @@ CPPFLAGS = $(addprefix -I ,$(INC_PATH))
 LDFLAGS = -L$(LFT_PATH)
 LDLIBS = -lft
 
-SRC_NAME =	arena.c \
-			player.c \
-			process.c \
-			get_input.c \
-			get_player_code.c \
-			main.c \
-			op.c \
-			instruction_param.c \
-			instructions_p1.c \
-			instructions_p2.c \
-			instructions_p3.c \
-			instructions_p4.c \
-			execution.c \
-			read_write.c \
-			check_player.c \
-			display.c \
-			display_infos.c \
-			display_mem.c \
-			display_color.c \
+SRC_NAME =		test.c \
 
 HEADER_NAME = 	ft_ls.h \
 
