@@ -6,7 +6,7 @@
 #    By: tvermeil <tvermeil@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2015/12/18 19:13:31 by tvermeil          #+#    #+#              #
-#    Updated: 2016/05/12 17:42:26 by tvermeil         ###   ########.fr        #
+#    Updated: 2016/05/12 20:36:09 by tvermeil         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -30,9 +30,10 @@ CPPFLAGS = $(addprefix -I ,$(INC_PATH))
 LDFLAGS = -L$(LFT_PATH)
 LDLIBS = -lft
 
-SRC_NAME =		test.c \
+SRC_NAME =		main.c \
 				infos.c \
 				print.c \
+				#test.c \
 
 HEADER_NAME = 	ft_ls.h \
 
