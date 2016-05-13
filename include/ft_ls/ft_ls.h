@@ -6,7 +6,7 @@
 /*   By: tvermeil <tvermeil@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/05/11 18:50:22 by tvermeil          #+#    #+#             */
-/*   Updated: 2016/05/12 21:24:24 by tvermeil         ###   ########.fr       */
+/*   Updated: 2016/05/13 21:30:57 by tvermeil         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,6 +32,8 @@ typedef struct				s_ls_file
 	long long				size;
 	time_t					last_modif;
 	char					*last_modif_str;
+	int						minor;
+	int						major;
 }							t_ls_file;
 
 typedef struct				s_ls_argument

@@ -6,13 +6,14 @@
 /*   By: tvermeil <tvermeil@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/05/11 22:44:22 by tvermeil          #+#    #+#             */
-/*   Updated: 2016/05/13 19:00:25 by tvermeil         ###   ########.fr       */
+/*   Updated: 2016/05/13 21:53:27 by tvermeil         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "ft_ls.h"
 #include "libft.h"
 #include <sys/stat.h>
+#include <sys/types.h>
 #include <pwd.h>
 #include <grp.h>
 #include <errno.h>
@@ -69,7 +70,10 @@ static inline void	get_owners(struct stat *s, t_ls_file *f)
 static inline void	get_type(struct stat *s, t_ls_file *f)
 {
 	if ((s->st_mode & S_IFLNK) == S_IFLNK)
+	{
 		f->rights[0] = 'l';
+		retrieve_link_content(f);
+	}
 	else if ((s->st_mode & S_IFBLK) == S_IFBLK)
 		f->rights[0] = 'b';
 	else if ((s->st_mode & S_IFSOCK) == S_IFSOCK)
@@ -82,6 +86,11 @@ static inline void	get_type(struct stat *s, t_ls_file *f)
 		f->rights[0] = 'c';
 	else if (s->st_mode & S_IFIFO)
 		f->rights[0] = 'p';
+	if (f->rights[0] == 'b' || f->rights[0] == 'c')
+	{
+		f->major = major(s->st_dev);
+		f->minor = minor(s->st_dev);
+	}
 }
 
 static inline void	get_rights(struct stat *s, t_ls_file *f)
@@ -139,8 +148,6 @@ t_ls_file			*get_file_struct(char *filename, int l_flag)
 		get_last_modif_str(&s, file_struct);
 		file_struct->size = s.st_size;
 		file_struct->links = s.st_nlink;
-		if (file_struct->rights[0] == 'l')
-			retrieve_link_content(file_struct);
 	}
 	return (file_struct);
 }
