@@ -6,7 +6,7 @@
 /*   By: tvermeil <tvermeil@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/05/11 22:44:22 by tvermeil          #+#    #+#             */
-/*   Updated: 2016/05/13 17:26:26 by tvermeil         ###   ########.fr       */
+/*   Updated: 2016/05/13 19:00:25 by tvermeil         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -68,20 +68,20 @@ static inline void	get_owners(struct stat *s, t_ls_file *f)
 
 static inline void	get_type(struct stat *s, t_ls_file *f)
 {
-	if (s->st_mode & S_IFDIR)
-		f->rights[0] = 'd';
-	else if ((s->st_mode & S_IFLNK) == S_IFLNK)
+	if ((s->st_mode & S_IFLNK) == S_IFLNK)
 		f->rights[0] = 'l';
-	else if (s->st_mode & S_IFCHR)
-		f->rights[0] = 'c';
-	else if (s->st_mode & S_IFIFO)
-		f->rights[0] = 'p';
 	else if ((s->st_mode & S_IFBLK) == S_IFBLK)
 		f->rights[0] = 'b';
 	else if ((s->st_mode & S_IFSOCK) == S_IFSOCK)
 		f->rights[0] = 's';
+	else if (s->st_mode & S_IFDIR)
+		f->rights[0] = 'd';
 	else if (s->st_mode & S_IFREG)
 		f->rights[0] = '-';
+	else if (s->st_mode & S_IFCHR)
+		f->rights[0] = 'c';
+	else if (s->st_mode & S_IFIFO)
+		f->rights[0] = 'p';
 }
 
 static inline void	get_rights(struct stat *s, t_ls_file *f)
