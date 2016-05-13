@@ -6,7 +6,7 @@
 /*   By: tvermeil <tvermeil@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/05/11 22:44:22 by tvermeil          #+#    #+#             */
-/*   Updated: 2016/05/12 18:29:59 by tvermeil         ###   ########.fr       */
+/*   Updated: 2016/05/13 17:26:26 by tvermeil         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,20 +19,24 @@
 #include <string.h>
 #include <time.h>
 
-static inline char	*get_name(const char *filename)
+static void			retrieve_link_content(t_ls_file *f)
 {
-	const char	*ptr;
-	int			i;
+	char		link_name[2048];
+	int			name_size;
+	char		*new_path;
 
-	ptr = filename;
-	i = 0;
-	while (filename[i])
+	name_size = readlink(f->name, link_name, 2048);
+	if (name_size == -1)
 	{
-		if (filename[i] == '/')
-			ptr = filename + i + 1;
-		i++;
+		ft_printf("ft_ls : Error while reading link : %s\n", strerror(errno));
+		errno = 0;
 	}
-	return (ft_strdup(ptr));
+	else
+	{
+		link_name[name_size] = '\0';
+		new_path = ft_strjoin(" -> ", link_name);
+		f->name = ft_strjoin_free(f->name, new_path);
+	}
 }
 
 static inline void	get_owners(struct stat *s, t_ls_file *f)
@@ -64,20 +68,20 @@ static inline void	get_owners(struct stat *s, t_ls_file *f)
 
 static inline void	get_type(struct stat *s, t_ls_file *f)
 {
-	if (s->st_mode & S_IFREG)
-		f->rights[0] = '-';
-	else if (s->st_mode & S_IFDIR)
+	if (s->st_mode & S_IFDIR)
 		f->rights[0] = 'd';
-	else if (s->st_mode & S_IFLNK)
+	else if ((s->st_mode & S_IFLNK) == S_IFLNK)
 		f->rights[0] = 'l';
 	else if (s->st_mode & S_IFCHR)
 		f->rights[0] = 'c';
 	else if (s->st_mode & S_IFIFO)
 		f->rights[0] = 'p';
-	else if (s->st_mode & S_IFBLK)
+	else if ((s->st_mode & S_IFBLK) == S_IFBLK)
 		f->rights[0] = 'b';
-	else if (s->st_mode & S_IFSOCK)
+	else if ((s->st_mode & S_IFSOCK) == S_IFSOCK)
 		f->rights[0] = 's';
+	else if (s->st_mode & S_IFREG)
+		f->rights[0] = '-';
 }
 
 static inline void	get_rights(struct stat *s, t_ls_file *f)
@@ -104,11 +108,11 @@ static inline void	get_last_modif_str(struct stat *s, t_ls_file *f)
 
 	if (time(&t) == (time_t)-1)
 	{
-		ft_printf("Error while retrieving current time");
+		ft_printf("Error while retrieving current time\n");
 		return ;
 	}
 	f->last_modif = s->st_mtimespec.tv_sec;
-	f->last_modif_str = ctime(&s->st_mtimespec.tv_sec); //ft_strdup ?
+	f->last_modif_str = ctime(&s->st_mtimespec.tv_sec) + 4; //ft_strdup ?
 	elapsed = t - s->st_mtimespec.tv_sec;
 	if (elapsed > 15778800 || elapsed < -15778800)
 		ft_strncpy(f->last_modif_str + 11, f->last_modif_str + 19, 5);
@@ -121,12 +125,12 @@ t_ls_file			*get_file_struct(char *filename, int l_flag)
 	struct stat	s;
 
 	file_struct = (t_ls_file *)ft_memalloc(sizeof(t_ls_file));
-	if (stat(filename, &s))
+	if (lstat(filename, &s))
 	{
 		ft_printf("Error for file %s : %s\n", filename, strerror(errno));
 		return (NULL);
 	}
-	file_struct->name = get_name(filename); //must duplicate string from last /
+	file_struct->name = ft_strdup(filename);
 	if (l_flag)
 	{
 		get_type(&s, file_struct);
@@ -135,6 +139,8 @@ t_ls_file			*get_file_struct(char *filename, int l_flag)
 		get_last_modif_str(&s, file_struct);
 		file_struct->size = s.st_size;
 		file_struct->links = s.st_nlink;
+		if (file_struct->rights[0] == 'l')
+			retrieve_link_content(file_struct);
 	}
 	return (file_struct);
 }
