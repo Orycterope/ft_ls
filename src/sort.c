@@ -6,7 +6,7 @@
 /*   By: tvermeil <tvermeil@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/05/14 15:45:09 by tvermeil          #+#    #+#             */
-/*   Updated: 2016/05/14 18:54:39 by tvermeil         ###   ########.fr       */
+/*   Updated: 2016/05/14 19:55:49 by tvermeil         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,7 +23,7 @@ static inline int			is_sort_alpha(void *a, void *b)
 static inline int			is_sort_date(void *a, void *b)
 {
 	if (((t_ls_file *)a)->last_modif != ((t_ls_file *)b)->last_modif)
-		return (((t_ls_file *)a)->last_modif - ((t_ls_file *)b)->last_modif);
+		return (((t_ls_file *)b)->last_modif - ((t_ls_file *)a)->last_modif);
 	else
 		return (is_sort_alpha(a, b));
 }

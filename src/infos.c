@@ -6,7 +6,7 @@
 /*   By: tvermeil <tvermeil@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/05/11 22:44:22 by tvermeil          #+#    #+#             */
-/*   Updated: 2016/05/14 19:28:54 by tvermeil         ###   ########.fr       */
+/*   Updated: 2016/05/14 19:53:13 by tvermeil         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -128,6 +128,7 @@ static inline void	get_last_modif_str(struct stat *s, t_ls_file *f)
 	if (elapsed > 15778800 || elapsed < -15778800)
 		ft_strncpy(f->last_modif_str + 11, f->last_modif_str + 19, 5);
 	f->last_modif_str[16] = '\0';
+	f->last_modif_str = ft_strdup(f->last_modif_str);
 }
 
 t_ls_file			*get_file_struct(char *filename)
@@ -160,6 +161,6 @@ void				free_file_struct(t_ls_file *file)
 	free(file->name);
 	free(file->owner);
 	free(file->group_owner);
-	//free(file->last_modif_str);
+	free(file->last_modif_str);
 	free(file);
 }
