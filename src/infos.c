@@ -6,7 +6,7 @@
 /*   By: tvermeil <tvermeil@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/05/11 22:44:22 by tvermeil          #+#    #+#             */
-/*   Updated: 2016/05/13 21:53:27 by tvermeil         ###   ########.fr       */
+/*   Updated: 2016/05/14 19:28:54 by tvermeil         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,6 +19,8 @@
 #include <errno.h>
 #include <string.h>
 #include <time.h>
+
+extern t_ls_flags	g_ls_flags;
 
 static void			retrieve_link_content(t_ls_file *f)
 {
@@ -88,8 +90,8 @@ static inline void	get_type(struct stat *s, t_ls_file *f)
 		f->rights[0] = 'p';
 	if (f->rights[0] == 'b' || f->rights[0] == 'c')
 	{
-		f->major = major(s->st_dev);
-		f->minor = minor(s->st_dev);
+		f->major = major(s->st_rdev);
+		f->minor = minor(s->st_rdev);
 	}
 }
 
@@ -120,7 +122,7 @@ static inline void	get_last_modif_str(struct stat *s, t_ls_file *f)
 		ft_printf("Error while retrieving current time\n");
 		return ;
 	}
-	f->last_modif = s->st_mtimespec.tv_sec;
+	//f->last_modif = s->st_mtimespec.tv_sec;
 	f->last_modif_str = ctime(&s->st_mtimespec.tv_sec) + 4; //ft_strdup ?
 	elapsed = t - s->st_mtimespec.tv_sec;
 	if (elapsed > 15778800 || elapsed < -15778800)
@@ -128,7 +130,7 @@ static inline void	get_last_modif_str(struct stat *s, t_ls_file *f)
 	f->last_modif_str[16] = '\0';
 }
 
-t_ls_file			*get_file_struct(char *filename, int l_flag)
+t_ls_file			*get_file_struct(char *filename)
 {
 	t_ls_file	*file_struct;
 	struct stat	s;
@@ -140,14 +142,15 @@ t_ls_file			*get_file_struct(char *filename, int l_flag)
 		return (NULL);
 	}
 	file_struct->name = ft_strdup(filename);
-	if (l_flag)
+	file_struct->last_modif = s.st_mtimespec.tv_sec;
+	if (g_ls_flags & LS_FLAG_l)
 	{
 		get_type(&s, file_struct);
 		get_rights(&s, file_struct);
 		get_owners(&s, file_struct);
 		get_last_modif_str(&s, file_struct);
-		file_struct->size = s.st_size;
 		file_struct->links = s.st_nlink;
+		file_struct->size = s.st_size;
 	}
 	return (file_struct);
 }

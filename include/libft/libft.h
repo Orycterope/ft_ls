@@ -6,7 +6,7 @@
 /*   By: tvermeil <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2015/11/23 12:24:10 by tvermeil          #+#    #+#             */
-/*   Updated: 2016/05/13 16:49:22 by tvermeil         ###   ########.fr       */
+/*   Updated: 2016/05/14 18:03:48 by tvermeil         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -78,7 +78,7 @@ int					ft_strequ(char const *s1, char const *s2);
 int					ft_strnequ(char const *s1, char const *s2, size_t n);
 char				*ft_strsub(char const *s, unsigned int start, size_t len);
 char				*ft_strjoin(char const *s1, char const *s2);
-char				*ft_strjoin_free(char const *s1, char const *s2);
+char				*ft_strjoin_free(char *s1, char *s2);
 char				*ft_strtrim(char const *s);
 t_list				*ft_lstnew(void const *content, size_t content_size);
 void				ft_lstdelone(t_list **alst, void (*del)(void *, size_t));
@@ -91,5 +91,8 @@ int					ft_write_big_endian(long long n, void *dst, size_t length);
 long long			ft_read_big_endian(void *src, size_t length);
 int					ft_printf(const char *format, ...);
 int					ft_printf_fd(int fd, const char *format, ...);
+void				ft_lstsort(t_list *lst, int (*cmp_func)(void*, void*));
+void				ft_lstfilter(t_list **lst, int (*filter_func)(void*),
+		void (*free_func)(void*));
 
 #endif

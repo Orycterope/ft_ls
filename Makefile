@@ -6,7 +6,7 @@
 #    By: tvermeil <tvermeil@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2015/12/18 19:13:31 by tvermeil          #+#    #+#              #
-#    Updated: 2016/05/13 19:01:04 by tvermeil         ###   ########.fr        #
+#    Updated: 2016/05/14 18:06:27 by tvermeil         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -33,6 +33,8 @@ LDLIBS = -lft
 SRC_NAME =		main.c \
 				infos.c \
 				print.c \
+				sort.c \
+				filter.c \
 				#test.c \
 
 HEADER_NAME = 	ft_ls.h \

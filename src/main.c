@@ -6,7 +6,7 @@
 /*   By: tvermeil <tvermeil@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/05/12 20:00:02 by tvermeil          #+#    #+#             */
-/*   Updated: 2016/05/12 21:30:47 by tvermeil         ###   ########.fr       */
+/*   Updated: 2016/05/14 18:35:08 by tvermeil         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,7 @@
 
 t_ls_flags			g_ls_flags = 0;
 
-static void	add_argument(t_ls_argument **lst, char *path)
+/*static void	add_argument(t_ls_argument **lst, char *path)
 {
 	t_ls_argument	*new;
 
@@ -25,7 +25,7 @@ static void	add_argument(t_ls_argument **lst, char *path)
 	new->path = path;
 	new->file_struct = get_file_struct(path, g_ls_flags & LS_FLAG_l);
 	*lst = new;
-}
+}*/
 
 static void	activate_flag(char flag)
 {
@@ -62,27 +62,21 @@ static void	read_flags(int *ac, char ***av)
 
 int			main(int ac, char **av)
 {
-	t_ls_argument	*arguments;
+	t_list	*arguments;
 
 	read_flags(&ac, &av);
 	arguments = NULL;
-	ft_printf("l flag: %d\n"
-			"R flag: %d\n"
-			"a flag: %d\n"
-			"r flag: %d\n"
-			"t flag: %d\n"
-			"first arg: %s\n",
-			g_ls_flags & LS_FLAG_l, g_ls_flags & LS_FLAG_R, g_ls_flags & LS_FLAG_a,
-			g_ls_flags & LS_FLAG_r, g_ls_flags & LS_FLAG_t,
-			(ac > 0) ? *av : "none");
+	ft_putendl("offset"); //
 	if (ac == 0)
-		add_argument(&arguments, ".");
+		ft_lstadd(&arguments,
+				ft_lstnew(get_file_struct("."), sizeof(t_ls_file)));
 	while (ac--)
-		add_argument(&arguments, *av++);
-	//sort_arguments(
+		ft_lstadd(&arguments,
+				ft_lstnew(get_file_struct(*av++), sizeof(t_ls_file)));
+	sort_file_lst(arguments, 1);
 	while (arguments)
 	{
-		ls_print_file(arguments->file_struct, g_ls_flags & LS_FLAG_l);
+		ls_print_file(arguments->content, g_ls_flags & LS_FLAG_l);
 		arguments = arguments->next;
 	}
 	return (0);
