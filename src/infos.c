@@ -6,7 +6,7 @@
 /*   By: tvermeil <tvermeil@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/05/11 22:44:22 by tvermeil          #+#    #+#             */
-/*   Updated: 2016/05/16 16:59:37 by tvermeil         ###   ########.fr       */
+/*   Updated: 2016/05/16 18:34:43 by tvermeil         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,6 +67,7 @@ static inline void	get_owners(struct stat *s, t_ls_file *f)
 	}
 	else
 		f->group_owner = ft_strdup(grp->gr_name); // strdup ?
+	errno = 0;
 }
 
 static inline void	get_type(struct stat *s, t_ls_file *f)
@@ -140,9 +141,10 @@ t_ls_file			*get_file_struct(char *filename)
 	if (lstat(filename, &s))
 	{
 		ft_printf("Error for file %s : %s\n", filename, strerror(errno));
+		errno = 0;
 		return (NULL);
 	}
-	file_struct->name = ft_strdup(filename);
+	file_struct->path = ft_strdup(filename);
 	file_struct->last_modif = s.st_mtimespec.tv_sec;
 	get_type(&s, file_struct);
 	if (g_ls_flags & LS_FLAG_l)

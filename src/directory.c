@@ -6,7 +6,7 @@
 /*   By: tvermeil <tvermeil@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/05/16 14:45:29 by tvermeil          #+#    #+#             */
-/*   Updated: 2016/05/16 17:18:18 by tvermeil         ###   ########.fr       */
+/*   Updated: 2016/05/16 18:09:24 by tvermeil         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,7 @@
 
 extern t_ls_flags	g_ls_flags;
 
-static int		should_filter_out(char *s)
+/*static int		should_filter_out(char *s)
 {
 	char	*dir_sep;
 
@@ -27,7 +27,7 @@ static int		should_filter_out(char *s)
 		if (*s++ == '/')
 			dir_sep = s;
 	return (*dir_sep == '.');
-}
+}*/
 
 static t_list	*create_file_lst_from_folder(char *dir_name)
 {
@@ -51,8 +51,8 @@ static t_list	*create_file_lst_from_folder(char *dir_name)
 			errno = 0;
 			continue ;
 		}
-		if ((g_ls_flags & LS_FLAG_a) || !should_filter_out(entry->d_name))
-			add_file_to_list(entry->d_name, &lst);
+		if ((g_ls_flags & LS_FLAG_a) || entry->d_name[0] != '.')
+			add_file_to_list(dir_name, entry->d_name, &lst);
 	}
 	return (lst);
 }

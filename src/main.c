@@ -6,7 +6,7 @@
 /*   By: tvermeil <tvermeil@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/05/12 20:00:02 by tvermeil          #+#    #+#             */
-/*   Updated: 2016/05/16 17:20:59 by tvermeil         ###   ########.fr       */
+/*   Updated: 2016/05/16 18:36:26 by tvermeil         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,13 +16,30 @@
 
 t_ls_flags			g_ls_flags = 0;
 
-void		add_file_to_list(char *file_name, t_list **lst)
+void		add_file_to_list(char *dir_name, char *file_name, t_list **lst)
 {
 	t_ls_file	*s;
+	char		*intermidiate;
+	char		*full_path;
 
-	s = get_file_struct(file_name);
+	s = NULL;
+	intermidiate = NULL;
+	if (dir_name)
+	{
+		intermidiate = ft_strjoin(dir_name, "/");
+		full_path = ft_strjoin(intermidiate, file_name);
+	}
+	else
+		full_path = ft_strdup(file_name);
+	if (full_path)
+		s = get_file_struct(full_path);
 	if (s)
+	{
+		s->name = ft_strdup(file_name);
 		ft_lstadd(lst, ft_lstnew(s, sizeof(t_ls_file)));
+	}
+	free(intermidiate);
+	free(full_path);
 }
 
 static void	activate_flag(char flag)
@@ -67,9 +84,9 @@ int			main(int ac, char **av)
 	arguments = NULL;
 	ft_putendl("offset"); //
 	if (ac == 0)
-		add_file_to_list(".", &arguments);
+		add_file_to_list(NULL, ".", &arguments);
 	while (ac--)
-		add_file_to_list(*av++, &arguments);
+		add_file_to_list(NULL, *av++, &arguments);
 	sort_file_lst(arguments, 1);
 	while (arguments)
 	{
