@@ -6,7 +6,7 @@
 /*   By: tvermeil <tvermeil@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/05/11 22:44:22 by tvermeil          #+#    #+#             */
-/*   Updated: 2016/05/14 19:53:13 by tvermeil         ###   ########.fr       */
+/*   Updated: 2016/05/16 16:59:37 by tvermeil         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -144,9 +144,9 @@ t_ls_file			*get_file_struct(char *filename)
 	}
 	file_struct->name = ft_strdup(filename);
 	file_struct->last_modif = s.st_mtimespec.tv_sec;
+	get_type(&s, file_struct);
 	if (g_ls_flags & LS_FLAG_l)
 	{
-		get_type(&s, file_struct);
 		get_rights(&s, file_struct);
 		get_owners(&s, file_struct);
 		get_last_modif_str(&s, file_struct);

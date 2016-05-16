@@ -6,7 +6,7 @@
 /*   By: tvermeil <tvermeil@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/05/12 20:00:02 by tvermeil          #+#    #+#             */
-/*   Updated: 2016/05/14 18:35:08 by tvermeil         ###   ########.fr       */
+/*   Updated: 2016/05/16 15:52:50 by tvermeil         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -76,7 +76,10 @@ int			main(int ac, char **av)
 	sort_file_lst(arguments, 1);
 	while (arguments)
 	{
-		ls_print_file(arguments->content, g_ls_flags & LS_FLAG_l);
+		if (((t_ls_file *)arguments->content)->rights[0] == 'd')
+			parse_directory(((t_ls_file *)arguments->content)->name, 1);
+		else
+			ls_print_file(arguments->content);
 		arguments = arguments->next;
 	}
 	return (0);

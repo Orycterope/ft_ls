@@ -6,12 +6,14 @@
 /*   By: tvermeil <tvermeil@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/05/11 19:07:54 by tvermeil          #+#    #+#             */
-/*   Updated: 2016/05/13 21:47:01 by tvermeil         ###   ########.fr       */
+/*   Updated: 2016/05/16 15:31:58 by tvermeil         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "ft_ls.h"
 #include "libft.h"
+
+extern t_ls_flags	g_ls_flags;
 
 static void	ls_print_file_long(t_ls_file *file)
 {
@@ -25,11 +27,24 @@ static void	ls_print_file_long(t_ls_file *file)
 			file->size, file->last_modif_str, file->name);
 }
 
-void		ls_print_file(t_ls_file *file, int l_flag)
+void		ls_print_file(t_ls_file *file)
 {
-	if (l_flag)
-		ls_print_file_long(file);
-	else
-		ft_printf("%s\t", file->name);
-	free_file_struct(file);
+	ft_printf("%s\t", file->name);
+}
+
+void		print_file_list(t_list *lst)
+{
+	t_list	*next;
+
+	while (lst)
+	{
+		next = lst->next;
+		if (g_ls_flags & LS_FLAG_l)
+			ls_print_file_long((t_ls_file*)(lst->content));
+		else
+			ls_print_file((t_ls_file*)(lst->content));
+		free_file_struct((t_ls_file*)(lst->content));
+		free(lst);
+		lst = next;
+	}
 }
