@@ -6,7 +6,7 @@
 /*   By: tvermeil <tvermeil@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/05/11 19:07:54 by tvermeil          #+#    #+#             */
-/*   Updated: 2016/05/16 15:31:58 by tvermeil         ###   ########.fr       */
+/*   Updated: 2016/05/16 19:45:53 by tvermeil         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,8 +43,6 @@ void		print_file_list(t_list *lst)
 			ls_print_file_long((t_ls_file*)(lst->content));
 		else
 			ls_print_file((t_ls_file*)(lst->content));
-		free_file_struct((t_ls_file*)(lst->content));
-		free(lst);
 		lst = next;
 	}
 }

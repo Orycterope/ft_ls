@@ -6,7 +6,7 @@
 /*   By: tvermeil <tvermeil@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/05/11 22:44:22 by tvermeil          #+#    #+#             */
-/*   Updated: 2016/05/16 18:34:43 by tvermeil         ###   ########.fr       */
+/*   Updated: 2016/05/16 19:53:58 by tvermeil         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -158,11 +158,15 @@ t_ls_file			*get_file_struct(char *filename)
 	return (file_struct);
 }
 
-void				free_file_struct(t_ls_file *file)
+void				free_file_struct(void *f, size_t s)
 {
-	free(file->name);
+	t_ls_file	*file;
+
+	file = (t_ls_file *)f;
+	s += 1;
+	/*free(file->path);
 	free(file->owner);
 	free(file->group_owner);
 	free(file->last_modif_str);
-	free(file);
+	free(file);*/
 }

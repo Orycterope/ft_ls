@@ -6,7 +6,7 @@
 /*   By: tvermeil <tvermeil@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/05/16 14:45:29 by tvermeil          #+#    #+#             */
-/*   Updated: 2016/05/16 18:09:24 by tvermeil         ###   ########.fr       */
+/*   Updated: 2016/05/16 19:59:30 by tvermeil         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,17 +17,6 @@
 #include <string.h>
 
 extern t_ls_flags	g_ls_flags;
-
-/*static int		should_filter_out(char *s)
-{
-	char	*dir_sep;
-
-	dir_sep = s;
-	while (*s)
-		if (*s++ == '/')
-			dir_sep = s;
-	return (*dir_sep == '.');
-}*/
 
 static t_list	*create_file_lst_from_folder(char *dir_name)
 {
@@ -60,6 +49,7 @@ static t_list	*create_file_lst_from_folder(char *dir_name)
 void			parse_directory(char *dir_name, int print_name)
 {
 	t_list	*lst;
+	t_list	*i;
 
 	lst = create_file_lst_from_folder(dir_name);
 	if (lst == NULL)
@@ -68,4 +58,15 @@ void			parse_directory(char *dir_name, int print_name)
 	if (print_name)
 		ft_printf("\n%s:\n", dir_name);
 	print_file_list(lst);
+	if (g_ls_flags & LS_FLAG_R)
+	{
+		i = lst;
+		while (i)
+		{
+			if (((t_ls_file*)i->content)->rights[0] == 'd')
+				parse_directory(((t_ls_file*)i->content)->path, 1);
+			i = i->next;
+		}
+	}
+	ft_lstdel(&lst, free_file_struct);
 }

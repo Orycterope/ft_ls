@@ -6,7 +6,7 @@
 /*   By: tvermeil <tvermeil@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/05/11 18:50:22 by tvermeil          #+#    #+#             */
-/*   Updated: 2016/05/16 18:34:02 by tvermeil         ###   ########.fr       */
+/*   Updated: 2016/05/16 19:39:05 by tvermeil         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,7 +44,7 @@ typedef struct				s_ls_argument
 	struct s_ls_argument	*next;
 }							t_ls_argument;
 
-void						free_file_struct(t_ls_file *file);
+void						free_file_struct(void *f, size_t s);
 t_ls_file					*get_file_struct(char *filename);
 void						ls_print_file(t_ls_file *file);
 void						sort_file_lst(t_list *lst, int is_param_lst);
