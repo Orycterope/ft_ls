@@ -6,7 +6,7 @@
 /*   By: tvermeil <tvermeil@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/05/12 20:00:02 by tvermeil          #+#    #+#             */
-/*   Updated: 2016/05/16 15:52:50 by tvermeil         ###   ########.fr       */
+/*   Updated: 2016/05/16 17:20:59 by tvermeil         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,16 +16,14 @@
 
 t_ls_flags			g_ls_flags = 0;
 
-/*static void	add_argument(t_ls_argument **lst, char *path)
+void		add_file_to_list(char *file_name, t_list **lst)
 {
-	t_ls_argument	*new;
+	t_ls_file	*s;
 
-	new = (t_ls_argument *)ft_memalloc(sizeof(t_ls_argument));
-	new->next = *lst;
-	new->path = path;
-	new->file_struct = get_file_struct(path, g_ls_flags & LS_FLAG_l);
-	*lst = new;
-}*/
+	s = get_file_struct(file_name);
+	if (s)
+		ft_lstadd(lst, ft_lstnew(s, sizeof(t_ls_file)));
+}
 
 static void	activate_flag(char flag)
 {
@@ -62,17 +60,16 @@ static void	read_flags(int *ac, char ***av)
 
 int			main(int ac, char **av)
 {
-	t_list	*arguments;
+	t_list		*arguments;
+	//t_ls_file	*file;
 
 	read_flags(&ac, &av);
 	arguments = NULL;
 	ft_putendl("offset"); //
 	if (ac == 0)
-		ft_lstadd(&arguments,
-				ft_lstnew(get_file_struct("."), sizeof(t_ls_file)));
+		add_file_to_list(".", &arguments);
 	while (ac--)
-		ft_lstadd(&arguments,
-				ft_lstnew(get_file_struct(*av++), sizeof(t_ls_file)));
+		add_file_to_list(*av++, &arguments);
 	sort_file_lst(arguments, 1);
 	while (arguments)
 	{

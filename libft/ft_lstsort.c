@@ -6,7 +6,7 @@
 /*   By: tvermeil <tvermeil@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/05/14 16:17:58 by tvermeil          #+#    #+#             */
-/*   Updated: 2016/05/14 19:14:24 by tvermeil         ###   ########.fr       */
+/*   Updated: 2016/05/16 17:23:48 by tvermeil         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,7 @@
 
 static t_list	*next_unsorted(t_list *lst, int (*cmp_func)(void*, void*))
 {
-	while (lst->next)
+	while (lst && lst->next)
 	{
 		if (cmp_func(lst->content, lst->next->content) > 0)
 			return (lst);
