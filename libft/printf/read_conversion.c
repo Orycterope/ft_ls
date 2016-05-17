@@ -6,14 +6,14 @@
 /*   By: tvermeil <tvermeil@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2015/12/16 16:40:31 by tvermeil          #+#    #+#             */
-/*   Updated: 2016/01/07 15:05:15 by tvermeil         ###   ########.fr       */
+/*   Updated: 2016/05/17 21:14:20 by tvermeil         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "read_conversion.h"
 #include "get_conversion_parts.h"
 
-t_conversion	*save_conversion_format(char *str)
+t_conversion	*save_conversion_format(char *str, va_list args)
 {
 	t_conversion	*conv;
 	int				i;
@@ -24,10 +24,17 @@ t_conversion	*save_conversion_format(char *str)
 	conv->conversion = 0;
 	conv->flags = get_flags(&str[i]);
 	i += ft_strlen(conv->flags);
-	conv->width = get_width(&str[i]);
-	i += ft_strlen(conv->width);
-	conv->precision = get_precision(&str[i]);
-	i += ft_strlen(conv->precision);
+	if (str[i] == '*')
+		conv->width = ft_itoa((int)va_arg(args, int));
+	else
+		conv->width = get_width(&str[i]);
+	i += (str[i] == '*') ? 1 : ft_strlen(conv->width);
+	if (str[i] == '.' && str[i + 1] == '*')
+		conv->precision = ft_strjoin_free(ft_strdup("."),
+				ft_itoa((int)va_arg(args, int)));
+	else
+		conv->precision = get_precision(&str[i]);
+	i += (str[i] == '.' && str[i + 1] == '*') ? 2 : ft_strlen(conv->precision);
 	conv->modifier = get_modifier(&str[i]);
 	i += ft_strlen(conv->modifier);
 	conv->conversion = get_conversion(&str[i]);

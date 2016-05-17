@@ -6,7 +6,7 @@
 /*   By: tvermeil <tvermeil@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/01/05 12:45:35 by tvermeil          #+#    #+#             */
-/*   Updated: 2016/05/08 17:17:46 by tvermeil         ###   ########.fr       */
+/*   Updated: 2016/05/17 20:37:57 by tvermeil         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,7 +32,7 @@ char		*get_processed_str(char *str, va_list args, int *length, char **end)
 
 	if (check_escaped(str, length, end))
 		return (ft_strdup("%"));
-	conv = save_conversion_format(str);
+	conv = save_conversion_format(str, args);
 	if (!conv)
 		return (NULL);
 	if (conv->conversion != 0)

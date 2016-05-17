@@ -6,7 +6,7 @@
 /*   By: tvermeil <tvermeil@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/05/17 18:58:46 by tvermeil          #+#    #+#             */
-/*   Updated: 2016/05/17 19:00:10 by tvermeil         ###   ########.fr       */
+/*   Updated: 2016/05/17 21:41:10 by tvermeil         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,5 +24,5 @@ int					ft_numlength(int n)
 	}
 	while ((n /= 10) > 0)
 		c++;
-	return (c + 1);
+	return (c);
 }
