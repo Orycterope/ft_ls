@@ -6,7 +6,7 @@
 /*   By: tvermeil <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2015/11/23 12:24:10 by tvermeil          #+#    #+#             */
-/*   Updated: 2016/05/17 12:42:19 by tvermeil         ###   ########.fr       */
+/*   Updated: 2016/05/17 19:00:07 by tvermeil         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,6 +47,7 @@ int					ft_atoi(const char *str);
 char				**ft_strsplit(char	const *s, char c);
 char				*ft_itoa_base(unsigned long long n, char *charset);
 char				*ft_itoa(int n);
+int					ft_numlength(int n);
 int					ft_isalpha(int c);
 int					ft_isdigit(int c);
 int					ft_isalnum(int c);

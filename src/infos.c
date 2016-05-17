@@ -6,7 +6,7 @@
 /*   By: tvermeil <tvermeil@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/05/11 22:44:22 by tvermeil          #+#    #+#             */
-/*   Updated: 2016/05/17 13:16:15 by tvermeil         ###   ########.fr       */
+/*   Updated: 2016/05/17 19:04:49 by tvermeil         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -153,6 +153,7 @@ t_ls_file			*get_file_struct(char *full_path, char *name)
 		get_rights(&s, file_struct);
 		get_owners(&s, file_struct);
 		get_last_modif_str(&s, file_struct);
+		file_struct->blocks = s.st_blocks;
 		file_struct->links = s.st_nlink;
 		file_struct->size = s.st_size;
 	}

@@ -6,7 +6,7 @@
 /*   By: tvermeil <tvermeil@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/05/16 14:45:29 by tvermeil          #+#    #+#             */
-/*   Updated: 2016/05/17 13:20:46 by tvermeil         ###   ########.fr       */
+/*   Updated: 2016/05/17 19:11:34 by tvermeil         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,10 +15,40 @@
 #include <errno.h>
 #include <dirent.h>
 #include <string.h>
+# define BIGGEST(X, Y) X = (X > Y) ? X : Y
 
 extern t_ls_flags	g_ls_flags;
 
-static t_list	*create_file_lst_from_folder(char *dir_name)
+static void			get_dir_infos(t_dirinfo *d, t_list *lst)
+{
+	t_ls_file	*f;
+
+	ft_memset(d, 0, sizeof(t_dirinfo));
+	while (lst)
+	{
+		d->file_number++;
+		f = ((t_ls_file*)lst->content);
+		if (g_ls_flags & LS_FLAG_l)
+		{
+			d->total_blocks += f->blocks;
+			BIGGEST(d->links_max_length, ft_numlength(f->links));
+			BIGGEST(d->owner_max_length, ft_strlen(f->name));
+			BIGGEST(d->group_max_length, ft_strlen(f->name));
+			BIGGEST(d->size_max_length, ft_numlength(f->size));
+			BIGGEST(d->name_max_length, ft_strlen(f->name));
+			if (f->minor || f->major)
+			{
+				BIGGEST(d->minor_max_length, ft_numlength(f->size));
+				BIGGEST(d->minor_max_length, ft_numlength(f->size));
+			}
+		}
+		else
+			BIGGEST(d->name_max_length, ft_strlen(f->name));
+		lst = lst->next;
+	}
+}
+
+static t_list		*create_file_lst_from_folder(char *dir_name)
 {
 	DIR				*dir;
 	struct dirent	*entry;
@@ -47,18 +77,20 @@ static t_list	*create_file_lst_from_folder(char *dir_name)
 	return (lst);
 }
 
-void			parse_directory(char *dir_name, int print_name)
+void				parse_directory(char *dir_name, int print_name)
 {
-	t_list	*lst;
-	t_list	*i;
+	t_list		*lst;
+	t_list		*i;
+	t_dirinfo	d;
 
 	lst = create_file_lst_from_folder(dir_name);
 	if (lst == NULL)
 		return ;
 	sort_file_lst(lst, 0);
+	get_dir_infos(&d, lst);
 	if (print_name)
 		ft_printf("\n%s:\n", dir_name);
-	print_file_list(lst);
+	print_file_list(lst, &d);
 	if (g_ls_flags & LS_FLAG_R)
 	{
 		i = lst;
@@ -72,7 +104,7 @@ void			parse_directory(char *dir_name, int print_name)
 	ft_lstdel(&lst, free_file_struct);
 }
 
-void			add_file_to_list(char *dir_name, char *file_name, t_list **lst)
+void				add_file_to_list(char *dir_name, char *file_name, t_list **lst)
 {
 	t_ls_file	*s;
 	char		*intermidiate;

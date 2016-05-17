@@ -6,7 +6,7 @@
 /*   By: tvermeil <tvermeil@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/05/12 20:00:02 by tvermeil          #+#    #+#             */
-/*   Updated: 2016/05/17 11:51:40 by tvermeil         ###   ########.fr       */
+/*   Updated: 2016/05/17 19:12:07 by tvermeil         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,7 +57,6 @@ int			main(int ac, char **av)
 
 	read_flags(&ac, &av);
 	arguments = NULL;
-	ft_putendl("offset"); //
 	if (ac == 0)
 		add_file_to_list(NULL, ".", &arguments);
 	while (ac--)
@@ -68,7 +67,7 @@ int			main(int ac, char **av)
 	{
 		if (((t_ls_file *)arguments->content)->rights[0] == 'd')
 			parse_directory(((t_ls_file *)arguments->content)->name,
-					first_arg->next == 0);
+					first_arg->next != 0);
 		else
 			ls_print_file(arguments->content);
 		arguments = arguments->next;

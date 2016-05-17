@@ -6,7 +6,7 @@
 #    By: tvermeil <tvermeil@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2016/03/11 16:50:07 by tvermeil          #+#    #+#              #
-#    Updated: 2016/05/17 12:41:13 by tvermeil         ###   ########.fr        #
+#    Updated: 2016/05/17 19:00:26 by tvermeil         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -66,6 +66,7 @@ SRC_NAME =		ft_memset.c \
    		    	ft_strtrim.c \
    		    	ft_strsplit.c \
    		    	ft_itoa.c \
+				ft_numlength.c \
    		    	ft_itoa_base.c \
    		    	ft_putchar.c \
    		    	ft_putstr.c \

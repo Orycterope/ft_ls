@@ -6,7 +6,7 @@
 /*   By: tvermeil <tvermeil@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/05/11 18:50:22 by tvermeil          #+#    #+#             */
-/*   Updated: 2016/05/17 12:25:40 by tvermeil         ###   ########.fr       */
+/*   Updated: 2016/05/17 19:11:25 by tvermeil         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,13 +35,27 @@ typedef struct				s_ls_file
 	char					*last_modif_str;
 	int						minor;
 	int						major;
+	long long				blocks;
 }							t_ls_file;
+
+typedef struct
+{
+	int						file_number;
+	long long				total_blocks;
+	size_t					name_max_length;
+	int						links_max_length;
+	size_t					owner_max_length;
+	size_t					group_max_length;
+	int						size_max_length;
+	int						minor_max_length;
+	int						major_max_length;
+}							t_dirinfo;
 
 void						free_file_struct(void *f, size_t s);
 t_ls_file					*get_file_struct(char *full_path, char *name);
 void						ls_print_file(t_ls_file *file);
 void						sort_file_lst(t_list *lst, int is_param_lst);
-void						print_file_list(t_list *lst);
+void						print_file_list(t_list *lst, t_dirinfo *d);
 void						parse_directory(char *dir_name, int print_name);
 void						add_file_to_list(char *d, char *f, t_list **lst);
 
