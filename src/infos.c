@@ -6,7 +6,7 @@
 /*   By: tvermeil <tvermeil@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/05/11 22:44:22 by tvermeil          #+#    #+#             */
-/*   Updated: 2016/05/16 19:53:58 by tvermeil         ###   ########.fr       */
+/*   Updated: 2016/05/17 13:16:15 by tvermeil         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,7 +42,7 @@ static void			retrieve_link_content(t_ls_file *f)
 	}
 }
 
-static inline void	get_owners(struct stat *s, t_ls_file *f)
+static void			get_owners(struct stat *s, t_ls_file *f)
 {
 	struct passwd	*pwd;
 	struct group	*grp;
@@ -56,7 +56,7 @@ static inline void	get_owners(struct stat *s, t_ls_file *f)
 		f->owner = ft_itoa(s->st_uid);
 	}
 	else
-		f->owner = ft_strdup(pwd->pw_name); // strdup ?
+		f->owner = ft_strdup(pwd->pw_name);
 	errno = 0;
 	grp = getgrgid(s->st_gid);
 	if (grp == NULL)
@@ -66,7 +66,7 @@ static inline void	get_owners(struct stat *s, t_ls_file *f)
 		f->group_owner = ft_itoa(s->st_gid);
 	}
 	else
-		f->group_owner = ft_strdup(grp->gr_name); // strdup ?
+		f->group_owner = ft_strdup(grp->gr_name);
 	errno = 0;
 }
 
@@ -117,34 +117,35 @@ static inline void	get_last_modif_str(struct stat *s, t_ls_file *f)
 {
 	time_t	elapsed;
 	time_t	t;
+	char	*buf;
 
 	if (time(&t) == (time_t)-1)
 	{
 		ft_printf("Error while retrieving current time\n");
 		return ;
 	}
-	//f->last_modif = s->st_mtimespec.tv_sec;
-	f->last_modif_str = ctime(&s->st_mtimespec.tv_sec) + 4; //ft_strdup ?
+	buf = ctime(&s->st_mtimespec.tv_sec) + 4;
 	elapsed = t - s->st_mtimespec.tv_sec;
 	if (elapsed > 15778800 || elapsed < -15778800)
-		ft_strncpy(f->last_modif_str + 11, f->last_modif_str + 19, 5);
-	f->last_modif_str[16] = '\0';
-	f->last_modif_str = ft_strdup(f->last_modif_str);
+		ft_strncpy(buf + 11, buf + 19, 5);
+	buf[12] = '\0';
+	f->last_modif_str = ft_strdup(buf);
 }
 
-t_ls_file			*get_file_struct(char *filename)
+t_ls_file			*get_file_struct(char *full_path, char *name)
 {
 	t_ls_file	*file_struct;
 	struct stat	s;
 
 	file_struct = (t_ls_file *)ft_memalloc(sizeof(t_ls_file));
-	if (lstat(filename, &s))
+	if (lstat(full_path, &s))
 	{
-		ft_printf("Error for file %s : %s\n", filename, strerror(errno));
+		ft_printf("Error for file %s : %s\n", full_path, strerror(errno));
 		errno = 0;
 		return (NULL);
 	}
-	file_struct->path = ft_strdup(filename);
+	file_struct->path = full_path;
+	file_struct->name = name;
 	file_struct->last_modif = s.st_mtimespec.tv_sec;
 	get_type(&s, file_struct);
 	if (g_ls_flags & LS_FLAG_l)
@@ -164,9 +165,10 @@ void				free_file_struct(void *f, size_t s)
 
 	file = (t_ls_file *)f;
 	s += 1;
-	/*free(file->path);
+	free(file->name);
+	free(file->path);
 	free(file->owner);
 	free(file->group_owner);
 	free(file->last_modif_str);
-	free(file);*/
+	free(file);
 }

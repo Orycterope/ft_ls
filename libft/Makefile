@@ -6,7 +6,7 @@
 #    By: tvermeil <tvermeil@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2016/03/11 16:50:07 by tvermeil          #+#    #+#              #
-#    Updated: 2016/05/14 17:52:41 by tvermeil         ###   ########.fr        #
+#    Updated: 2016/05/17 12:41:13 by tvermeil         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -77,6 +77,7 @@ SRC_NAME =		ft_memset.c \
    		    	ft_putendl_fd.c \
    		    	ft_putnbr_fd.c \
    		    	ft_lstnew.c \
+   		    	ft_lstnew_nocpy.c \
    		    	ft_lstdelone.c \
    		    	ft_lstdel.c \
    		    	ft_lstadd.c \

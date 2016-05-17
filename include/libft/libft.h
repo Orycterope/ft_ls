@@ -6,7 +6,7 @@
 /*   By: tvermeil <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2015/11/23 12:24:10 by tvermeil          #+#    #+#             */
-/*   Updated: 2016/05/14 18:03:48 by tvermeil         ###   ########.fr       */
+/*   Updated: 2016/05/17 12:42:19 by tvermeil         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -81,6 +81,7 @@ char				*ft_strjoin(char const *s1, char const *s2);
 char				*ft_strjoin_free(char *s1, char *s2);
 char				*ft_strtrim(char const *s);
 t_list				*ft_lstnew(void const *content, size_t content_size);
+t_list				*ft_lstnew_nocpy(void *content, size_t content_size);
 void				ft_lstdelone(t_list **alst, void (*del)(void *, size_t));
 void				ft_lstdel(t_list **alst, void (*del)(void *, size_t));
 void				ft_lstadd(t_list **alst, t_list *new);

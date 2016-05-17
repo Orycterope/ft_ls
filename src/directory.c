@@ -6,7 +6,7 @@
 /*   By: tvermeil <tvermeil@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/05/16 14:45:29 by tvermeil          #+#    #+#             */
-/*   Updated: 2016/05/16 19:59:30 by tvermeil         ###   ########.fr       */
+/*   Updated: 2016/05/17 13:20:46 by tvermeil         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,6 +43,7 @@ static t_list	*create_file_lst_from_folder(char *dir_name)
 		if ((g_ls_flags & LS_FLAG_a) || entry->d_name[0] != '.')
 			add_file_to_list(dir_name, entry->d_name, &lst);
 	}
+	closedir(dir);
 	return (lst);
 }
 
@@ -69,4 +70,28 @@ void			parse_directory(char *dir_name, int print_name)
 		}
 	}
 	ft_lstdel(&lst, free_file_struct);
+}
+
+void			add_file_to_list(char *dir_name, char *file_name, t_list **lst)
+{
+	t_ls_file	*s;
+	char		*intermidiate;
+	char		*full_path;
+
+	s = NULL;
+	intermidiate = NULL;
+	if (dir_name)
+	{
+		intermidiate = ft_strjoin(dir_name, "/");
+		full_path = ft_strjoin(intermidiate, file_name);
+		free(intermidiate);
+	}
+	else
+		full_path = ft_strdup(file_name);
+	if (full_path == NULL)
+		return ;
+	s = get_file_struct(full_path, ft_strdup(file_name));
+	if (s == NULL)
+		return ;
+	ft_lstadd(lst, ft_lstnew_nocpy(s, sizeof(t_ls_file)));
 }

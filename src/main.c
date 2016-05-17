@@ -6,7 +6,7 @@
 /*   By: tvermeil <tvermeil@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/05/12 20:00:02 by tvermeil          #+#    #+#             */
-/*   Updated: 2016/05/16 18:36:26 by tvermeil         ###   ########.fr       */
+/*   Updated: 2016/05/17 11:51:40 by tvermeil         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,32 +15,6 @@
 #include <errno.h>
 
 t_ls_flags			g_ls_flags = 0;
-
-void		add_file_to_list(char *dir_name, char *file_name, t_list **lst)
-{
-	t_ls_file	*s;
-	char		*intermidiate;
-	char		*full_path;
-
-	s = NULL;
-	intermidiate = NULL;
-	if (dir_name)
-	{
-		intermidiate = ft_strjoin(dir_name, "/");
-		full_path = ft_strjoin(intermidiate, file_name);
-	}
-	else
-		full_path = ft_strdup(file_name);
-	if (full_path)
-		s = get_file_struct(full_path);
-	if (s)
-	{
-		s->name = ft_strdup(file_name);
-		ft_lstadd(lst, ft_lstnew(s, sizeof(t_ls_file)));
-	}
-	free(intermidiate);
-	free(full_path);
-}
 
 static void	activate_flag(char flag)
 {
@@ -78,7 +52,8 @@ static void	read_flags(int *ac, char ***av)
 int			main(int ac, char **av)
 {
 	t_list		*arguments;
-	//t_ls_file	*file;
+	t_list		*first_arg;
+
 
 	read_flags(&ac, &av);
 	arguments = NULL;
@@ -88,13 +63,16 @@ int			main(int ac, char **av)
 	while (ac--)
 		add_file_to_list(NULL, *av++, &arguments);
 	sort_file_lst(arguments, 1);
+	first_arg = arguments;
 	while (arguments)
 	{
 		if (((t_ls_file *)arguments->content)->rights[0] == 'd')
-			parse_directory(((t_ls_file *)arguments->content)->name, 1);
+			parse_directory(((t_ls_file *)arguments->content)->name,
+					first_arg->next == 0);
 		else
 			ls_print_file(arguments->content);
 		arguments = arguments->next;
 	}
+	ft_lstdel(&first_arg, free_file_struct);
 	return (0);
 }
