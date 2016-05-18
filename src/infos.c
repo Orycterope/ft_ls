@@ -6,7 +6,7 @@
 /*   By: tvermeil <tvermeil@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/05/11 22:44:22 by tvermeil          #+#    #+#             */
-/*   Updated: 2016/05/18 15:48:01 by tvermeil         ###   ########.fr       */
+/*   Updated: 2016/05/18 17:34:04 by tvermeil         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -112,6 +112,8 @@ static inline void	get_rights(struct stat *s, t_ls_file *f)
 		f->rights[3] = (s->st_mode & S_IXUSR) ? 's' : 'S';
 	if (s->st_mode & S_ISGID)
 		f->rights[6] = (s->st_mode & S_IXGRP) ? 's' : 'S';
+	if (s->st_mode & S_ISVTX)
+		f->rights[9] = (s->st_mode & S_IXOTH) ? 't' : 'T';
 }
 
 static inline void	get_last_modif_str(struct stat *s, t_ls_file *f)
