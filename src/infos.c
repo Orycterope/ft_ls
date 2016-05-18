@@ -6,7 +6,7 @@
 /*   By: tvermeil <tvermeil@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/05/11 22:44:22 by tvermeil          #+#    #+#             */
-/*   Updated: 2016/05/18 17:53:23 by tvermeil         ###   ########.fr       */
+/*   Updated: 2016/05/18 19:31:29 by tvermeil         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,7 +31,7 @@ static void			retrieve_link_content(t_ls_file *f)
 	name_size = readlink(f->path, link_name, 2048);
 	if (name_size == -1)
 	{
-		ft_printf("ft_ls : Error while reading link : %s\n", strerror(errno));
+		ft_printf("ft_ls: Error while reading link: %s\n", strerror(errno));
 		errno = 0;
 	}
 	else
@@ -143,7 +143,7 @@ t_ls_file			*get_file_struct(char *full_path, char *name)
 	file_struct = (t_ls_file *)ft_memalloc(sizeof(t_ls_file));
 	if (lstat(full_path, &s))
 	{
-		ft_printf("Error for file %s : %s\n", full_path, strerror(errno));
+		ft_printf_fd(2, "ft_ls: %s: %s\n", full_path, strerror(errno));
 		errno = 0;
 		return (NULL);
 	}

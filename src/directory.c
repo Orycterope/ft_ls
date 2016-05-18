@@ -6,7 +6,7 @@
 /*   By: tvermeil <tvermeil@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/05/16 14:45:29 by tvermeil          #+#    #+#             */
-/*   Updated: 2016/05/18 18:18:29 by tvermeil         ###   ########.fr       */
+/*   Updated: 2016/05/18 19:24:48 by tvermeil         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,7 +57,7 @@ static t_list		*create_file_lst_from_folder(char *dir_name)
 	dir = opendir(dir_name);
 	if (dir == NULL)
 	{
-		ft_printf("ft_ls : error while opening folder %s : %s\n", dir_name, strerror(errno));
+		ft_printf_fd(2, "ft_ls: %s: %s\n", dir_name, strerror(errno));
 		errno = 0;
 		return NULL;
 	}
@@ -66,7 +66,7 @@ static t_list		*create_file_lst_from_folder(char *dir_name)
 	{
 		if (errno)
 		{
-			ft_printf("ft_ls : error while retriving from folder %s : %s\n", dir_name, strerror(errno));
+			ft_printf_fd(2, "ft_ls : error while retriving from folder %s : %s\n", dir_name, strerror(errno));
 			errno = 0;
 			continue ;
 		}
