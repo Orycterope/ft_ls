@@ -6,7 +6,7 @@
 /*   By: tvermeil <tvermeil@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/05/11 22:44:22 by tvermeil          #+#    #+#             */
-/*   Updated: 2016/05/18 17:34:04 by tvermeil         ###   ########.fr       */
+/*   Updated: 2016/05/18 17:53:23 by tvermeil         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -130,7 +130,7 @@ static inline void	get_last_modif_str(struct stat *s, t_ls_file *f)
 	buf = ctime(&s->st_mtimespec.tv_sec) + 4;
 	elapsed = t - s->st_mtimespec.tv_sec;
 	if (elapsed > 15778800 || elapsed < -15778800)
-		ft_strncpy(buf + 11, buf + 19, 5);
+		ft_strncpy(buf + 7, buf + 15, 5);
 	buf[12] = '\0';
 	f->last_modif_str = ft_strdup(buf);
 }
