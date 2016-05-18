@@ -6,7 +6,7 @@
 /*   By: tvermeil <tvermeil@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/05/17 18:58:46 by tvermeil          #+#    #+#             */
-/*   Updated: 2016/05/17 21:41:10 by tvermeil         ###   ########.fr       */
+/*   Updated: 2016/05/18 17:11:34 by tvermeil         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,6 +17,8 @@ int					ft_numlength(int n)
 	int		c;
 
 	c = 1;
+	if (n == 0)
+		return (0);
 	if (n < 0)
 	{
 		n = -n;

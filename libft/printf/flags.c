@@ -6,7 +6,7 @@
 /*   By: tvermeil <tvermeil@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2015/12/16 19:04:36 by tvermeil          #+#    #+#             */
-/*   Updated: 2016/05/08 17:08:09 by tvermeil         ###   ########.fr       */
+/*   Updated: 2016/05/18 16:59:37 by tvermeil         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -90,6 +90,7 @@ char		*process_flags(char *str, t_conversion *conv)
 			&& (!(ft_strchr("diouxX", conv->conversion) && *(conv->precision))
 			|| conv->conversion == 0))
 		out = zero_wrapper(out, ft_atoi(conv->width));
-	out = space_wrapper(out, ft_atoi(conv->width));
+	if (ft_atoi(conv->width) > 0)
+		out = space_wrapper(out, ft_atoi(conv->width));
 	return (out);
 }

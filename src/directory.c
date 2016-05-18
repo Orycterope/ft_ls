@@ -6,7 +6,7 @@
 /*   By: tvermeil <tvermeil@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/05/16 14:45:29 by tvermeil          #+#    #+#             */
-/*   Updated: 2016/05/17 21:47:02 by tvermeil         ###   ########.fr       */
+/*   Updated: 2016/05/18 16:34:10 by tvermeil         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,12 +34,13 @@ static void			get_dir_infos(t_dirinfo *d, t_list *lst)
 			BIGGEST(d->links_max_length, ft_numlength(f->links));
 			BIGGEST(d->owner_max_length, ft_strlen(f->owner));
 			BIGGEST(d->group_max_length, ft_strlen(f->group_owner));
-			BIGGEST(d->size_max_length, ft_numlength(f->size));
-			if (f->minor || f->major)
+			if (f->rights[0] == 'c' || f->rights[0] == 'b')
 			{
-				BIGGEST(d->minor_max_length, ft_numlength(f->size));
-				BIGGEST(d->minor_max_length, ft_numlength(f->size));
+				BIGGEST(d->major_max_length, ft_numlength(f->major));
+				BIGGEST(d->minor_max_length, ft_numlength(f->minor));
 			}
+			else
+				BIGGEST(d->size_max_length, ft_numlength(f->size));
 		}
 		else
 			BIGGEST(d->name_max_length, ft_strlen(f->name));

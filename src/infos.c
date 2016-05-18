@@ -6,7 +6,7 @@
 /*   By: tvermeil <tvermeil@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/05/11 22:44:22 by tvermeil          #+#    #+#             */
-/*   Updated: 2016/05/17 19:04:49 by tvermeil         ###   ########.fr       */
+/*   Updated: 2016/05/18 15:48:01 by tvermeil         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,7 +28,7 @@ static void			retrieve_link_content(t_ls_file *f)
 	int			name_size;
 	char		*new_path;
 
-	name_size = readlink(f->name, link_name, 2048);
+	name_size = readlink(f->path, link_name, 2048);
 	if (name_size == -1)
 	{
 		ft_printf("ft_ls : Error while reading link : %s\n", strerror(errno));
@@ -75,7 +75,8 @@ static inline void	get_type(struct stat *s, t_ls_file *f)
 	if ((s->st_mode & S_IFLNK) == S_IFLNK)
 	{
 		f->rights[0] = 'l';
-		retrieve_link_content(f);
+		if (g_ls_flags && LS_FLAG_l)
+			retrieve_link_content(f);
 	}
 	else if ((s->st_mode & S_IFBLK) == S_IFBLK)
 		f->rights[0] = 'b';
