@@ -43,7 +43,7 @@ static int					is_sort_param(void *a, void *b)
 
 	x = (t_ls_file *)a;
 	y = (t_ls_file *)b;
-	if (x->rights[0] == 'd' ^ y->rights[0] == 'd')
+	if ((x->rights[0] == 'd') ^ (y->rights[0] == 'd'))
 		return ((x->rights[0] == 'd'));
 	else if (g_ls_flags & LS_FLAG_r)
 		return (is_sort_revert(a, b));

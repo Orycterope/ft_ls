@@ -19,6 +19,9 @@
 #include <errno.h>
 #include <string.h>
 #include <time.h>
+#ifdef __APPLE__
+# define st_mtime st_mtimespec.tv_sec
+#endif
 
 extern t_ls_flags	g_ls_flags;
 
@@ -127,8 +130,8 @@ static inline void	get_last_modif_str(struct stat *s, t_ls_file *f)
 		ft_printf("Error while retrieving current time\n");
 		return ;
 	}
-	buf = ctime(&s->st_mtimespec.tv_sec) + 4;
-	elapsed = t - s->st_mtimespec.tv_sec;
+	buf = ctime(&s->st_mtime) + 4;
+	elapsed = t - s->st_mtime;
 	if (elapsed > 15778800 || elapsed < -15778800)
 		ft_strncpy(buf + 7, buf + 15, 5);
 	buf[12] = '\0';
@@ -149,7 +152,7 @@ t_ls_file			*get_file_struct(char *full_path, char *name)
 	}
 	file_struct->path = full_path;
 	file_struct->name = name;
-	file_struct->last_modif = s.st_mtimespec.tv_sec;
+	file_struct->last_modif = s.st_mtime;
 	get_type(&s, file_struct);
 	if (g_ls_flags & LS_FLAG_l)
 	{

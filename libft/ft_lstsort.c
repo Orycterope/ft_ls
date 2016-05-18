@@ -11,6 +11,7 @@
 /* ************************************************************************** */
 
 #include "libft.h"
+#include <stdint.h>
 
 static t_list	*next_unsorted(t_list *lst, int (*cmp_func)(void*, void*))
 {
