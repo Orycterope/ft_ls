@@ -6,7 +6,7 @@
 /*   By: tvermeil <tvermeil@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/05/16 14:45:29 by tvermeil          #+#    #+#             */
-/*   Updated: 2016/05/18 19:24:48 by tvermeil         ###   ########.fr       */
+/*   Updated: 2016/05/19 13:32:26 by tvermeil         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,7 @@
 
 extern t_ls_flags	g_ls_flags;
 
-static void			get_dir_infos(t_dirinfo *d, t_list *lst)
+void			get_dir_infos(t_dirinfo *d, t_list *lst)
 {
 	t_ls_file	*f;
 

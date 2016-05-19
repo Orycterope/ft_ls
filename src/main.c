@@ -6,7 +6,7 @@
 /*   By: tvermeil <tvermeil@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/05/12 20:00:02 by tvermeil          #+#    #+#             */
-/*   Updated: 2016/05/19 13:23:17 by tvermeil         ###   ########.fr       */
+/*   Updated: 2016/05/19 13:31:13 by tvermeil         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -70,10 +70,12 @@ static void	read_flags(int *ac, char ***av)
 
 static void	print_parameters(t_list *files, t_list *dirs, int several_args)
 {
-	while (files)
+	t_dirinfo	d;
+
+	if (files)
 	{
-		ls_print_file(files->content);
-		files = files->next;
+		get_dir_infos(&d, files);
+		print_file_list(files, &d);
 	}
 	while (dirs)
 	{
@@ -93,7 +95,7 @@ int			main(int ac, char **av)
 	arguments = NULL;
 	if (ac == 0)
 		add_file_to_list(NULL, ".", &arguments);
-	several_args = (ac > 1)? 1 : 0;
+	several_args = (ac > 1) ? 1 : 0;
 	while (ac--)
 		add_file_to_list(NULL, *av++, &arguments);
 	sort_file_lst(arguments, 1);
