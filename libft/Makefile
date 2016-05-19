@@ -6,7 +6,7 @@
 #    By: tvermeil <tvermeil@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2016/03/11 16:50:07 by tvermeil          #+#    #+#              #
-#    Updated: 2016/05/17 19:00:26 by tvermeil         ###   ########.fr        #
+#    Updated: 2016/05/19 18:02:38 by tvermeil         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -87,6 +87,7 @@ SRC_NAME =		ft_memset.c \
    		    	ft_lstmap.c \
    		    	ft_lstsort.c \
    		    	ft_lstsplit.c \
+				ft_lstlen.c \
 				ft_tostr.c \
 				ft_endianness.c \
 				ft_power.c \

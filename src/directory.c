@@ -6,7 +6,7 @@
 /*   By: tvermeil <tvermeil@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/05/16 14:45:29 by tvermeil          #+#    #+#             */
-/*   Updated: 2016/05/19 13:32:26 by tvermeil         ###   ########.fr       */
+/*   Updated: 2016/05/19 17:40:30 by tvermeil         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,7 +43,7 @@ void			get_dir_infos(t_dirinfo *d, t_list *lst)
 				BIGGEST(d->size_max_length, ft_numlength(f->size));
 		}
 		else
-			BIGGEST(d->name_max_length, ft_strlen(f->name));
+			BIGGEST(d->name_max_length, (int)ft_strlen(f->name));
 		lst = lst->next;
 	}
 }

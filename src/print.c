@@ -6,14 +6,16 @@
 /*   By: tvermeil <tvermeil@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/05/11 19:07:54 by tvermeil          #+#    #+#             */
-/*   Updated: 2016/05/18 17:18:52 by tvermeil         ###   ########.fr       */
+/*   Updated: 2016/05/19 19:14:28 by tvermeil         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "ft_ls.h"
 #include "libft.h"
+# define BIGGEST(X, Y) X = (X > Y) ? X : Y
 
 extern t_ls_flags	g_ls_flags;
+extern int			g_termcolnum;
 
 static void	ls_print_file_long(t_ls_file *file, t_dirinfo *d)
 {
@@ -38,24 +40,52 @@ static void	ls_print_file_long(t_ls_file *file, t_dirinfo *d)
 			file->last_modif_str, file->name);
 }
 
-void		ls_print_file(t_ls_file *file)
+void		ls_print_files(t_list *files, t_dirinfo *d)
 {
-	ft_printf("%s\t", file->name);
+	int			coltotal;
+	int			linestotal;
+	t_list		*i;
+	int			current_line;
+	int			file_total;
+	int			n;
+
+	coltotal = 1;
+	if (g_termcolnum > 0)
+		BIGGEST(coltotal, g_termcolnum / (d->name_max_length + 1));
+	file_total = ft_lstlen(files);
+	linestotal = file_total / coltotal + (file_total % coltotal != 0);
+	coltotal = file_total / linestotal + (file_total % linestotal != 0);
+	current_line = 0;
+	while (++current_line <= linestotal)
+	{
+		i = files;
+		n = 1;
+		while (i)
+		{
+			if (n % linestotal == (current_line % linestotal))
+				ft_printf("%-*s ", (int)d->name_max_length,
+						((t_ls_file*)i->content)->name);
+			i = i->next;
+			n++;
+		}
+		ft_putchar('\n');
+	}
 }
 
 void		print_file_list(t_list *lst, t_dirinfo *d)
 {
 	t_list	*next;
 
-	if (g_ls_flags & LS_FLAG_l)
-		ft_printf("total %d\n", d->total_blocks);
-	while (lst)
+	if (!(g_ls_flags & LS_FLAG_l))
+		ls_print_files(lst, d);
+	else
 	{
-		next = lst->next;
-		if (g_ls_flags & LS_FLAG_l)
+		ft_printf("total %d\n", d->total_blocks);
+		while (lst)
+		{
+			next = lst->next; //not used anymore
 			ls_print_file_long((t_ls_file*)(lst->content), d);
-		else
-			ls_print_file((t_ls_file*)(lst->content));
-		lst = next;
+			lst = next;
+		}
 	}
 }

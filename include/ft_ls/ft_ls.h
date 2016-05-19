@@ -6,7 +6,7 @@
 /*   By: tvermeil <tvermeil@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/05/11 18:50:22 by tvermeil          #+#    #+#             */
-/*   Updated: 2016/05/19 13:32:22 by tvermeil         ###   ########.fr       */
+/*   Updated: 2016/05/19 17:37:34 by tvermeil         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,7 +42,7 @@ typedef struct
 {
 	int						file_number;
 	long long				total_blocks;
-	size_t					name_max_length;
+	int						name_max_length;
 	int						links_max_length;
 	size_t					owner_max_length;
 	size_t					group_max_length;

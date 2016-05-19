@@ -6,15 +6,17 @@
 /*   By: tvermeil <tvermeil@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/05/12 20:00:02 by tvermeil          #+#    #+#             */
-/*   Updated: 2016/05/19 13:31:13 by tvermeil         ###   ########.fr       */
+/*   Updated: 2016/05/19 14:57:05 by tvermeil         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "ft_ls.h"
 #include "libft.h"
 #include <errno.h>
+#include <sys/ioctl.h>
 
 t_ls_flags			g_ls_flags = 0;
+int					g_termcolnum = 0;
 
 static void	split_parameters(t_list **files, t_list **dirs)
 {
@@ -89,9 +91,15 @@ int			main(int ac, char **av)
 	t_list		*arguments;
 	int			several_args;
 	t_list		*dir_args;
+	struct		winsize ws;
 
 
 	read_flags(&ac, &av);
+	if ((g_ls_flags & LS_FLAG_l) == 0)
+	{
+		ioctl(0, TIOCGWINSZ, &ws);
+		g_termcolnum = ws.ws_col;
+	}
 	arguments = NULL;
 	if (ac == 0)
 		add_file_to_list(NULL, ".", &arguments);
