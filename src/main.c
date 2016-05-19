@@ -16,6 +16,17 @@
 
 t_ls_flags			g_ls_flags = 0;
 
+static int should_split_lst(void *content)
+{
+	t_ls_file *file;
+
+	file = (t_ls_file *)content;
+	if (file->rights[0] == 'd')
+		return (1);
+	else
+		return (0);
+}
+
 static void	activate_flag(char flag)
 {
 	if (flag == 'l')
@@ -49,29 +60,42 @@ static void	read_flags(int *ac, char ***av)
 	}
 }
 
+static void	print_parameters(t_list *files, t_list *dirs, int several_args)
+{
+	while (files)
+	{
+		ls_print_file(files->content);
+		files = files->next;
+	}
+	while (dirs)
+	{
+		parse_directory(((t_ls_file *)dirs->content)->name, several_args);
+		dirs = dirs->next;
+	}
+}
+
 int			main(int ac, char **av)
 {
 	t_list		*arguments;
-	t_list		*first_arg;
+	int			several_args;
+	t_list		*file_args;
+	t_list		*dir_args;
 
 
 	read_flags(&ac, &av);
 	arguments = NULL;
 	if (ac == 0)
 		add_file_to_list(NULL, ".", &arguments);
+	several_args = (ac > 1)? 1 : 0;
 	while (ac--)
 		add_file_to_list(NULL, *av++, &arguments);
 	sort_file_lst(arguments, 1);
-	first_arg = arguments;
-	while (arguments)
-	{
-		if (((t_ls_file *)arguments->content)->rights[0] == 'd')
-			parse_directory(((t_ls_file *)arguments->content)->name,
-					first_arg->next != 0);
-		else
-			ls_print_file(arguments->content);
-		arguments = arguments->next;
-	}
-	ft_lstdel(&first_arg, free_file_struct);
+	arguments = ft_lstsplit(arguments, should_split_lst);
+	file_args = (t_list *)arguments->content;
+	dir_args = (arguments->next) ? (t_list *)arguments->next->content : NULL;
+	print_parameters(file_args, dir_args, several_args);
+	ft_lstdel(&file_args, free_file_struct);
+	ft_lstdel(&dir_args, free_file_struct);
+	ft_lstdel(&arguments, NULL);
 	return (0);
 }

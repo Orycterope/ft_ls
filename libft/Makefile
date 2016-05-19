@@ -82,6 +82,7 @@ SRC_NAME =		ft_memset.c \
    		    	ft_lstdelone.c \
    		    	ft_lstdel.c \
    		    	ft_lstadd.c \
+   		    	ft_lstappend.c \
    		    	ft_lstiter.c \
    		    	ft_lstmap.c \
    		    	ft_lstsort.c \

@@ -23,7 +23,8 @@ void	ft_lstdel(t_list **alst, void (*del)(void *, size_t))
 	while (maillon)
 	{
 		next = maillon->next;
-		(*del)(maillon->content, sizeof(t_list));
+		if (del != NULL)
+			(*del)(maillon->content, sizeof(t_list));
 		free(maillon);
 		maillon = next;
 	}

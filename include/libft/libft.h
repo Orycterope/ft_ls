@@ -86,6 +86,7 @@ t_list				*ft_lstnew_nocpy(void *content, size_t content_size);
 void				ft_lstdelone(t_list **alst, void (*del)(void *, size_t));
 void				ft_lstdel(t_list **alst, void (*del)(void *, size_t));
 void				ft_lstadd(t_list **alst, t_list *new);
+void				ft_lstappend(t_list **alst, t_list *new);
 void				ft_lstiter(t_list *lst, void (*f)(t_list *elem));
 t_list				*ft_lstmap(t_list *lst, t_list *(*f)(t_list *elem));
 char				*ft_tostr(char c);
@@ -96,5 +97,6 @@ int					ft_printf_fd(int fd, const char *format, ...);
 void				ft_lstsort(t_list *lst, int (*cmp_func)(void*, void*));
 void				ft_lstfilter(t_list **lst, int (*filter_func)(void*),
 		void (*free_func)(void*));
+t_list				*ft_lstsplit(t_list *lst, int (*cmp_func)(void*));
 
 #endif
