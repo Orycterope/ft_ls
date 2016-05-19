@@ -1,37 +1,42 @@
-//header here
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   ft_lstsplit.c                                      :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: tvermeil <tvermeil@student.42.fr>          +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2016/05/19 12:34:03 by tvermeil          #+#    #+#             */
+/*   Updated: 2016/05/19 12:42:24 by tvermeil         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
 
 #include "libft.h"
+
 /*
 ** Splits a list everytime the cmp function returns a non-zero value
 ** and returns a list of all the sublists created.
-** If the callback function never returned true, null is returned
-** and the list is left as is.
+** The list is splitted after the element on which cmp_func returned true
 */
 
-t_list			*ft_lstsplit(t_list *lst, int (*cmp_func)(void*))
+t_list			*ft_lstsplit(t_list *lst, int (*cmp_func)(t_list *))
 {
 	t_list	*parent_lst;
-	t_list	*previous;
+	t_list	*next;
 
 	if (lst == NULL)
 		return (NULL);
 	parent_lst = NULL;
-	previous = NULL;
+	ft_lstappend(&parent_lst, ft_lstnew_nocpy(lst, sizeof(void*)));
 	while (lst)
 	{
-		if ((*cmp_func)(lst->content))
+		next = lst->next;
+		if ((*cmp_func)(lst))
 		{
-			if (previous == NULL)
-				ft_lstappend(&parent_lst, 
-					ft_lstnew_nocpy(NULL, sizeof(void*)));
-			else
-				ft_lstappend(&parent_lst, 
-					ft_lstnew_nocpy(lst->content, sizeof(void*)));
-			if (previous)
-				previous->next = NULL;
+			ft_lstappend(&parent_lst,
+				ft_lstnew_nocpy(lst, sizeof(void*)));
+			lst->next = NULL;
 		}
-		previous = lst;
-		lst = lst->next;
+		lst = next;
 	}
 	return (parent_lst);
 }

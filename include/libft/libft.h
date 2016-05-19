@@ -6,7 +6,7 @@
 /*   By: tvermeil <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2015/11/23 12:24:10 by tvermeil          #+#    #+#             */
-/*   Updated: 2016/05/17 19:00:07 by tvermeil         ###   ########.fr       */
+/*   Updated: 2016/05/19 13:18:20 by tvermeil         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -97,6 +97,6 @@ int					ft_printf_fd(int fd, const char *format, ...);
 void				ft_lstsort(t_list *lst, int (*cmp_func)(void*, void*));
 void				ft_lstfilter(t_list **lst, int (*filter_func)(void*),
 		void (*free_func)(void*));
-t_list				*ft_lstsplit(t_list *lst, int (*cmp_func)(void*));
+t_list				*ft_lstsplit(t_list *lst, int (*cmp_func)(t_list *));
 
 #endif

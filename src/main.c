@@ -6,7 +6,7 @@
 /*   By: tvermeil <tvermeil@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/05/12 20:00:02 by tvermeil          #+#    #+#             */
-/*   Updated: 2016/05/18 19:26:58 by tvermeil         ###   ########.fr       */
+/*   Updated: 2016/05/19 13:23:17 by tvermeil         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,15 +16,23 @@
 
 t_ls_flags			g_ls_flags = 0;
 
-static int should_split_lst(void *content)
+static void	split_parameters(t_list **files, t_list **dirs)
 {
-	t_ls_file *file;
+	t_list	*previous;
+	t_list	*i;
 
-	file = (t_ls_file *)content;
-	if (file->rights[0] == 'd')
-		return (1);
+	previous = NULL;
+	i = *files;
+	while (i && ((t_ls_file*)i->content)->rights[0] != 'd')
+	{
+		previous = i;
+		i = i->next;
+	}
+	*dirs = i;
+	if (previous == NULL)
+		*files = NULL;
 	else
-		return (0);
+		previous->next = NULL;
 }
 
 static void	activate_flag(char flag)
@@ -78,7 +86,6 @@ int			main(int ac, char **av)
 {
 	t_list		*arguments;
 	int			several_args;
-	t_list		*file_args;
 	t_list		*dir_args;
 
 
@@ -90,12 +97,9 @@ int			main(int ac, char **av)
 	while (ac--)
 		add_file_to_list(NULL, *av++, &arguments);
 	sort_file_lst(arguments, 1);
-	arguments = ft_lstsplit(arguments, should_split_lst);
-	file_args = (t_list *)arguments->content;
-	dir_args = (arguments->next) ? (t_list *)arguments->next->content : NULL;
-	print_parameters(file_args, dir_args, several_args);
-	ft_lstdel(&file_args, free_file_struct);
+	split_parameters(&arguments, &dir_args);
+	print_parameters(arguments, dir_args, several_args);
+	ft_lstdel(&arguments, free_file_struct);
 	ft_lstdel(&dir_args, free_file_struct);
-	ft_lstdel(&arguments, NULL);
 	return (0);
 }
