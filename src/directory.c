@@ -6,7 +6,7 @@
 /*   By: tvermeil <tvermeil@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/05/16 14:45:29 by tvermeil          #+#    #+#             */
-/*   Updated: 2016/05/19 17:40:30 by tvermeil         ###   ########.fr       */
+/*   Updated: 2016/05/20 13:28:44 by tvermeil         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -114,7 +114,7 @@ void				add_file_to_list(char *dir_name, char *file_name, t_list **lst)
 	intermidiate = NULL;
 	if (dir_name)
 	{
-		if (ft_strcmp(dir_name, "/") != 0)
+		if (dir_name[ft_strlen(dir_name) - 1] != '/')
 		{
 			intermidiate = ft_strjoin(dir_name, "/");
 			full_path = ft_strjoin(intermidiate, file_name);
