@@ -6,7 +6,7 @@
 /*   By: tvermeil <tvermeil@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/05/11 18:50:22 by tvermeil          #+#    #+#             */
-/*   Updated: 2016/05/19 17:37:34 by tvermeil         ###   ########.fr       */
+/*   Updated: 2016/05/20 13:58:28 by tvermeil         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,9 +16,10 @@
 # include "libft.h"
 # define LS_FLAG_l 1
 # define LS_FLAG_R 2
-# define LS_FLAG_a 4
-# define LS_FLAG_r 8
-# define LS_FLAG_t 16
+# define LS_FLAG_r 4
+# define LS_FLAG_t 8
+# define LS_FLAG_A 16
+# define LS_FLAG_a 32
 
 typedef	char				t_ls_flags;
 

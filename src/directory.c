@@ -6,7 +6,7 @@
 /*   By: tvermeil <tvermeil@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/05/16 14:45:29 by tvermeil          #+#    #+#             */
-/*   Updated: 2016/05/20 13:28:44 by tvermeil         ###   ########.fr       */
+/*   Updated: 2016/05/20 14:02:51 by tvermeil         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,18 @@
 
 extern t_ls_flags	g_ls_flags;
 
-void			get_dir_infos(t_dirinfo *d, t_list *lst)
+static int			filter_out(char *file_name)
+{
+	if (g_ls_flags & LS_FLAG_a)
+		return (0);
+	else if ((g_ls_flags & LS_FLAG_A) && ft_strcmp(file_name, ".") != 0
+				&& ft_strcmp(file_name, "..") != 0)
+			return (0);
+	else
+			return (file_name[0] == '.');
+}
+
+void				get_dir_infos(t_dirinfo *d, t_list *lst)
 {
 	t_ls_file	*f;
 
@@ -70,7 +81,7 @@ static t_list		*create_file_lst_from_folder(char *dir_name)
 			errno = 0;
 			continue ;
 		}
-		if ((g_ls_flags & LS_FLAG_a) || entry->d_name[0] != '.')
+		if (!filter_out(entry->d_name))
 			add_file_to_list(dir_name, entry->d_name, &lst);
 	}
 	closedir(dir);
