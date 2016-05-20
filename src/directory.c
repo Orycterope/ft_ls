@@ -6,7 +6,7 @@
 /*   By: tvermeil <tvermeil@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/05/16 14:45:29 by tvermeil          #+#    #+#             */
-/*   Updated: 2016/05/20 14:02:51 by tvermeil         ###   ########.fr       */
+/*   Updated: 2016/05/20 14:59:48 by tvermeil         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -95,12 +95,12 @@ void				parse_directory(char *dir_name, int print_name)
 	t_dirinfo	d;
 
 	lst = create_file_lst_from_folder(dir_name);
+	if (print_name)
+		ft_printf("\n%s:\n", dir_name);
 	if (lst == NULL)
 		return ;
 	sort_file_lst(lst, 0);
 	get_dir_infos(&d, lst);
-	if (print_name)
-		ft_printf("\n%s:\n", dir_name);
 	print_file_list(lst, &d);
 	if (g_ls_flags & LS_FLAG_R)
 	{
