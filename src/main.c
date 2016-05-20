@@ -6,7 +6,7 @@
 /*   By: tvermeil <tvermeil@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/05/12 20:00:02 by tvermeil          #+#    #+#             */
-/*   Updated: 2016/05/20 14:02:45 by tvermeil         ###   ########.fr       */
+/*   Updated: 2016/05/20 14:26:41 by tvermeil         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,10 +51,12 @@ static void	activate_flag(char flag)
 		g_ls_flags |= LS_FLAG_t;
 	else if (flag == 'A')
 		g_ls_flags |= LS_FLAG_A;
+	else if (flag == '1')
+		g_ls_flags |= LS_FLAG_1;
 	else
 	{
 		ft_printf_fd(2, "ft_ls: illegal option -- %c\n"
-				"usage: ft_ls [-lRaArt] [file ...]\n", flag);
+				"usage: ft_ls [-1lRaArt] [file ...]\n", flag);
 			exit(EINVAL);
 	}
 }

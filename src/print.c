@@ -6,7 +6,7 @@
 /*   By: tvermeil <tvermeil@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/05/11 19:07:54 by tvermeil          #+#    #+#             */
-/*   Updated: 2016/05/19 19:14:28 by tvermeil         ###   ########.fr       */
+/*   Updated: 2016/05/20 14:26:04 by tvermeil         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -74,18 +74,19 @@ void		ls_print_files(t_list *files, t_dirinfo *d)
 
 void		print_file_list(t_list *lst, t_dirinfo *d)
 {
-	t_list	*next;
-
-	if (!(g_ls_flags & LS_FLAG_l))
+	if (!(g_ls_flags & LS_FLAG_l) && !(g_ls_flags & LS_FLAG_1))
 		ls_print_files(lst, d);
 	else
 	{
-		ft_printf("total %d\n", d->total_blocks);
+		if (g_ls_flags & LS_FLAG_l)
+			ft_printf("total %d\n", d->total_blocks);
 		while (lst)
 		{
-			next = lst->next; //not used anymore
-			ls_print_file_long((t_ls_file*)(lst->content), d);
-			lst = next;
+			if (g_ls_flags & LS_FLAG_l)
+				ls_print_file_long((t_ls_file*)(lst->content), d);
+			else
+				ft_printf("%s\n", ((t_ls_file*)(lst->content))->name);
+			lst = lst->next;
 		}
 	}
 }
