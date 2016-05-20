@@ -6,7 +6,7 @@
 /*   By: tvermeil <tvermeil@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/05/11 18:50:22 by tvermeil          #+#    #+#             */
-/*   Updated: 2016/05/20 14:20:59 by tvermeil         ###   ########.fr       */
+/*   Updated: 2016/05/20 15:16:03 by tvermeil         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,12 +14,12 @@
 # define FT_LS_H
 # include <time.h>
 # include "libft.h"
-# define LS_FLAG_l 1
-# define LS_FLAG_R 2
-# define LS_FLAG_r 4
-# define LS_FLAG_t 8
-# define LS_FLAG_A 16
-# define LS_FLAG_a 32
+# define LS_FLAG_L_LOWER 1
+# define LS_FLAG_R_UPPER 2
+# define LS_FLAG_R_LOWER 4
+# define LS_FLAG_T_LOWER 8
+# define LS_FLAG_A_UPPER 16
+# define LS_FLAG_A_LOWER 32
 # define LS_FLAG_1 64
 
 typedef	char				t_ls_flags;
@@ -28,7 +28,7 @@ typedef struct				s_ls_file
 {
 	char					*name;
 	char					*path;
-	char					rights[12]; // d-w--w--w-@\0
+	char					rights[12];
 	unsigned int			links;
 	char					*owner;
 	char					*group_owner;

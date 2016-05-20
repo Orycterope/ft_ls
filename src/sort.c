@@ -6,7 +6,7 @@
 /*   By: tvermeil <tvermeil@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/05/14 15:45:09 by tvermeil          #+#    #+#             */
-/*   Updated: 2016/05/14 19:55:49 by tvermeil         ###   ########.fr       */
+/*   Updated: 2016/05/20 15:25:10 by tvermeil         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,10 +30,10 @@ static inline int			is_sort_date(void *a, void *b)
 
 static inline int			is_sort_revert(void *a, void *b)
 {
-	if (g_ls_flags & LS_FLAG_t)
-		return (is_sort_date(a, b));
+	if (g_ls_flags & LS_FLAG_T_LOWER)
+		return (-is_sort_date(a, b));
 	else
-		return (is_sort_alpha(a, b));
+		return (-is_sort_alpha(a, b));
 }
 
 static int					is_sort_param(void *a, void *b)
@@ -45,9 +45,9 @@ static int					is_sort_param(void *a, void *b)
 	y = (t_ls_file *)b;
 	if ((x->rights[0] == 'd') ^ (y->rights[0] == 'd'))
 		return ((x->rights[0] == 'd'));
-	else if (g_ls_flags & LS_FLAG_r)
+	else if (g_ls_flags & LS_FLAG_R_LOWER)
 		return (is_sort_revert(a, b));
-	else if (g_ls_flags & LS_FLAG_t)
+	else if (g_ls_flags & LS_FLAG_T_LOWER)
 		return (is_sort_date(a, b));
 	else
 		return (is_sort_alpha(a, b));
@@ -57,9 +57,9 @@ void						sort_file_lst(t_list *lst, int is_param_lst)
 {
 	if (is_param_lst)
 		ft_lstsort(lst, is_sort_param);
-	else if (g_ls_flags & LS_FLAG_r)
+	else if (g_ls_flags & LS_FLAG_R_LOWER)
 		ft_lstsort(lst, is_sort_revert);
-	else if (g_ls_flags & LS_FLAG_t)
+	else if (g_ls_flags & LS_FLAG_T_LOWER)
 		ft_lstsort(lst, is_sort_date);
 	else
 		ft_lstsort(lst, is_sort_alpha);

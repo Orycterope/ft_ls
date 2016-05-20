@@ -6,7 +6,7 @@
 /*   By: tvermeil <tvermeil@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/05/12 20:00:02 by tvermeil          #+#    #+#             */
-/*   Updated: 2016/05/20 14:26:41 by tvermeil         ###   ########.fr       */
+/*   Updated: 2016/05/20 15:17:40 by tvermeil         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,24 +40,24 @@ static void	split_parameters(t_list **files, t_list **dirs)
 static void	activate_flag(char flag)
 {
 	if (flag == 'l')
-		g_ls_flags |= LS_FLAG_l;
+		g_ls_flags |= LS_FLAG_L_LOWER;
 	else if (flag == 'R')
-		g_ls_flags |= LS_FLAG_R;
+		g_ls_flags |= LS_FLAG_R_UPPER;
 	else if (flag == 'a')
-		g_ls_flags |= LS_FLAG_a;
+		g_ls_flags |= LS_FLAG_A_LOWER;
 	else if (flag == 'r')
-		g_ls_flags |= LS_FLAG_r;
+		g_ls_flags |= LS_FLAG_R_LOWER;
 	else if (flag == 't')
-		g_ls_flags |= LS_FLAG_t;
+		g_ls_flags |= LS_FLAG_T_LOWER;
 	else if (flag == 'A')
-		g_ls_flags |= LS_FLAG_A;
+		g_ls_flags |= LS_FLAG_A_UPPER;
 	else if (flag == '1')
 		g_ls_flags |= LS_FLAG_1;
 	else
 	{
 		ft_printf_fd(2, "ft_ls: illegal option -- %c\n"
-				"usage: ft_ls [-1lRaArt] [file ...]\n", flag);
-			exit(EINVAL);
+			"usage: ft_ls [-1lRaArt] [file ...]\n", flag);
+		exit(EINVAL);
 	}
 }
 
@@ -92,14 +92,13 @@ static void	print_parameters(t_list *files, t_list *dirs, int several_args)
 
 int			main(int ac, char **av)
 {
-	t_list		*arguments;
-	int			several_args;
-	t_list		*dir_args;
-	struct		winsize ws;
-
+	t_list			*arguments;
+	int				several_args;
+	t_list			*dir_args;
+	struct winsize	ws;
 
 	read_flags(&ac, &av);
-	if ((g_ls_flags & LS_FLAG_l) == 0)
+	if ((g_ls_flags & LS_FLAG_L_LOWER) == 0)
 	{
 		ioctl(0, TIOCGWINSZ, &ws);
 		g_termcolnum = ws.ws_col;

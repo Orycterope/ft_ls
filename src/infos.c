@@ -6,7 +6,7 @@
 /*   By: tvermeil <tvermeil@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/05/11 22:44:22 by tvermeil          #+#    #+#             */
-/*   Updated: 2016/05/20 14:36:31 by tvermeil         ###   ########.fr       */
+/*   Updated: 2016/05/20 15:19:11 by tvermeil         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,9 @@
 #include <string.h>
 #include <time.h>
 #ifdef __APPLE__
-# define st_mtime st_mtimespec.tv_sec
+# define TIME st_mtimespec.tv_sec
+#else
+# define TIME st_mtime
 #endif
 
 extern t_ls_flags	g_ls_flags;
@@ -78,7 +80,7 @@ static inline void	get_type(struct stat *s, t_ls_file *f)
 	if ((s->st_mode & S_IFLNK) == S_IFLNK)
 	{
 		f->rights[0] = 'l';
-		if (g_ls_flags & LS_FLAG_l)
+		if (g_ls_flags & LS_FLAG_L_LOWER)
 			retrieve_link_content(f);
 	}
 	else if ((s->st_mode & S_IFBLK) == S_IFBLK)
@@ -130,8 +132,8 @@ static inline void	get_last_modif_str(struct stat *s, t_ls_file *f)
 		ft_printf("Error while retrieving current time\n");
 		return ;
 	}
-	buf = ctime(&s->st_mtime) + 4;
-	elapsed = t - s->st_mtime;
+	buf = ctime(&s->TIME) + 4;
+	elapsed = t - s->TIME;
 	if (elapsed > 15778800 || elapsed < -15778800)
 		ft_strncpy(buf + 7, buf + 15, 5);
 	buf[12] = '\0';
@@ -154,7 +156,7 @@ t_ls_file			*get_file_struct(char *full_path, char *name)
 	file_struct->name = name;
 	file_struct->last_modif = s.st_mtime;
 	get_type(&s, file_struct);
-	if (g_ls_flags & LS_FLAG_l)
+	if (g_ls_flags & LS_FLAG_L_LOWER)
 	{
 		get_rights(&s, file_struct);
 		get_owners(&s, file_struct);

@@ -6,7 +6,7 @@
 /*   By: tvermeil <tvermeil@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/05/16 14:45:29 by tvermeil          #+#    #+#             */
-/*   Updated: 2016/05/20 14:59:48 by tvermeil         ###   ########.fr       */
+/*   Updated: 2016/05/20 15:23:04 by tvermeil         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,19 +15,19 @@
 #include <errno.h>
 #include <dirent.h>
 #include <string.h>
-# define BIGGEST(X, Y) X = (X > Y) ? X : Y
+#define BIGGEST(X, Y) X = (X > Y) ? X : Y
 
 extern t_ls_flags	g_ls_flags;
 
 static int			filter_out(char *file_name)
 {
-	if (g_ls_flags & LS_FLAG_a)
+	if (g_ls_flags & LS_FLAG_A_LOWER)
 		return (0);
-	else if ((g_ls_flags & LS_FLAG_A) && ft_strcmp(file_name, ".") != 0
-				&& ft_strcmp(file_name, "..") != 0)
-			return (0);
+	else if ((g_ls_flags & LS_FLAG_A_UPPER) && ft_strcmp(file_name, ".") != 0
+			&& ft_strcmp(file_name, "..") != 0)
+		return (0);
 	else
-			return (file_name[0] == '.');
+		return (file_name[0] == '.');
 }
 
 void				get_dir_infos(t_dirinfo *d, t_list *lst)
@@ -39,7 +39,7 @@ void				get_dir_infos(t_dirinfo *d, t_list *lst)
 	{
 		d->file_number++;
 		f = ((t_ls_file*)lst->content);
-		if (g_ls_flags & LS_FLAG_l)
+		if (g_ls_flags & LS_FLAG_L_LOWER)
 		{
 			d->total_blocks += f->blocks;
 			BIGGEST(d->links_max_length, ft_numlength(f->links));
@@ -70,14 +70,14 @@ static t_list		*create_file_lst_from_folder(char *dir_name)
 	{
 		ft_printf_fd(2, "ft_ls: %s: %s\n", dir_name, strerror(errno));
 		errno = 0;
-		return NULL;
+		return (NULL);
 	}
 	lst = NULL;
 	while ((entry = readdir(dir)))
 	{
 		if (errno)
 		{
-			ft_printf_fd(2, "ft_ls : error while retriving from folder %s : %s\n", dir_name, strerror(errno));
+			ft_printf_fd(2, "ft_ls: %s: %s\n", dir_name, strerror(errno));
 			errno = 0;
 			continue ;
 		}
@@ -102,7 +102,7 @@ void				parse_directory(char *dir_name, int print_name)
 	sort_file_lst(lst, 0);
 	get_dir_infos(&d, lst);
 	print_file_list(lst, &d);
-	if (g_ls_flags & LS_FLAG_R)
+	if (g_ls_flags & LS_FLAG_R_UPPER)
 	{
 		i = lst;
 		while (i)
@@ -115,7 +115,8 @@ void				parse_directory(char *dir_name, int print_name)
 	ft_lstdel(&lst, free_file_struct);
 }
 
-void				add_file_to_list(char *dir_name, char *file_name, t_list **lst)
+void				add_file_to_list(char *dir_name, char *file_name,
+		t_list **lst)
 {
 	t_ls_file	*s;
 	char		*intermidiate;
