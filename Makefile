@@ -6,7 +6,7 @@
 #    By: tvermeil <tvermeil@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2015/12/18 19:13:31 by tvermeil          #+#    #+#              #
-#    Updated: 2016/05/16 20:28:58 by tvermeil         ###   ########.fr        #
+#    Updated: 2016/05/20 15:33:30 by tvermeil         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -24,7 +24,7 @@ OBJ_PATH = $(ROOT)/$(OBJ_FOLDER)
 DST_PATH = $(ROOT)
 LFT_PATH = $(ROOT)
 
-CC = gcc -g
+CC = gcc
 CFLAGS = -Wall -Wextra -Werror
 CPPFLAGS = $(addprefix -I ,$(INC_PATH))
 LDFLAGS = -L$(LFT_PATH)
@@ -35,7 +35,7 @@ SRC_NAME =		main.c \
 				print.c \
 				sort.c \
 				directory.c \
-				#test.c \
+				file.c \
 
 HEADER_NAME = 	ft_ls.h \
 

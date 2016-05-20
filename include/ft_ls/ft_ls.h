@@ -6,13 +6,14 @@
 /*   By: tvermeil <tvermeil@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/05/11 18:50:22 by tvermeil          #+#    #+#             */
-/*   Updated: 2016/05/20 15:16:03 by tvermeil         ###   ########.fr       */
+/*   Updated: 2016/05/20 15:51:36 by tvermeil         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef FT_LS_H
 # define FT_LS_H
 # include <time.h>
+# include <sys/stat.h>
 # include "libft.h"
 # define LS_FLAG_L_LOWER 1
 # define LS_FLAG_R_UPPER 2
@@ -51,6 +52,8 @@ typedef struct
 	int						size_max_length;
 	int						minor_max_length;
 	int						major_max_length;
+	int						columns;
+	int						lines;
 }							t_dirinfo;
 
 void						free_file_struct(void *f, size_t s);
@@ -61,5 +64,10 @@ void						print_file_list(t_list *lst, t_dirinfo *d);
 void						parse_directory(char *dir_name, int print_name);
 void						get_dir_infos(t_dirinfo *d, t_list *lst);
 void						add_file_to_list(char *d, char *f, t_list **lst);
+void						retrieve_link_content(t_ls_file *f);
+void						get_owners(struct stat *s, t_ls_file *f);
+void						get_type(struct stat *s, t_ls_file *f);
+void						get_rights(struct stat *s, t_ls_file *f);
+void						get_last_modif_str(struct stat *s, t_ls_file *f);
 
 #endif
