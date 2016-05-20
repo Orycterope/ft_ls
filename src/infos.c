@@ -6,7 +6,7 @@
 /*   By: tvermeil <tvermeil@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/05/11 22:44:22 by tvermeil          #+#    #+#             */
-/*   Updated: 2016/05/18 19:31:29 by tvermeil         ###   ########.fr       */
+/*   Updated: 2016/05/20 14:36:31 by tvermeil         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -78,7 +78,7 @@ static inline void	get_type(struct stat *s, t_ls_file *f)
 	if ((s->st_mode & S_IFLNK) == S_IFLNK)
 	{
 		f->rights[0] = 'l';
-		if (g_ls_flags && LS_FLAG_l)
+		if (g_ls_flags & LS_FLAG_l)
 			retrieve_link_content(f);
 	}
 	else if ((s->st_mode & S_IFBLK) == S_IFBLK)
