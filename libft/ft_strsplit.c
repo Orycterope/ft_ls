@@ -3,63 +3,81 @@
 /*                                                        :::      ::::::::   */
 /*   ft_strsplit.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jriallan <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: tvermeil <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2015/11/25 20:54:45 by jriallan          #+#    #+#             */
-/*   Updated: 2015/12/03 20:00:21 by jriallan         ###   ########.fr       */
+/*   Created: 2015/11/25 14:45:47 by tvermeil          #+#    #+#             */
+/*   Updated: 2015/11/27 22:32:55 by tvermeil         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
 
-static int		ft_szwd(char const *s, char c)
+static int	ft_wordnbr(char const *s, char c)
 {
-	if (*s != '\0' && *s != c)
-		return (ft_szwd(s + 1, c) + 1);
-	return (0);
+	int	words;
+
+	words = 1;
+	while (*++s)
+		if (*s == c && *(s - 1) != c)
+			words++;
+	return (words);
 }
 
-static int		ft_count_wrd(char *str, char c)
+static int	ft_wordlen(char const *s, char c)
 {
-	int count;
+	int len;
 
-	count = 0;
-	while (*str != '\0')
-	{
-		if (*str != c && *str != '\0')
-			count++;
-		while (*str != c && *str != '\0')
-			str++;
-		while (*str == c)
-			str++;
-	}
-	return (count);
+	len = 1;
+	while (*s == c && *s != '\0')
+		s++;
+	while (*s != c && *s++ != '\0')
+		len++;
+	return (len);
 }
 
-char			**ft_strsplit(char const *s, char c)
+static char	*ft_cpyword(char const *s, char c)
 {
-	char	*str;
+	char	*wordstart;
+	char	*parser;
+
+	while (*s == c)
+		s++;
+	if (!(wordstart = (char *)malloc(sizeof(char) * ft_wordlen(s, c))))
+		return (NULL);
+	parser = wordstart;
+	while (*s != c && *s != 0)
+		*parser++ = *s++;
+	*parser = '\0';
+	return (wordstart);
+}
+
+static char	*ft_nextword(char const *s, char c)
+{
+	while (*s == c && *s != 0)
+		s++;
+	while (*s != c && *s != 0)
+		s++;
+	return ((char *)s);
+}
+
+char		**ft_strsplit(char const *s, char c)
+{
 	char	**tab;
+	char	*word;
 	int		i;
-	int		word;
 
 	if (s == NULL)
 		return (NULL);
-	str = (char *)s;
-	word = ft_count_wrd(str, c);
-	if ((tab = (char **)malloc(sizeof(char *) * (word + 1))) == NULL)
+	if (!(tab = (char **)malloc(sizeof(char*) * ft_wordnbr(s, c))))
 		return (NULL);
 	i = 0;
-	while (word--)
+	while (*s && ft_wordlen(s, c) > 1)
 	{
-		while (*str == c)
-			str++;
-		if (*str == '\0')
-			break ;
-		if ((tab[i++] = ft_strsub(str, 0, ft_szwd(str, c))) == NULL)
+		word = ft_cpyword(s, c);
+		if (word == NULL)
 			return (NULL);
-		while (*str != c && *str != '\0')
-			str++;
+		tab[i++] = word;
+		s = ft_nextword(s, c);
 	}
 	tab[i] = 0;
 	return (tab);

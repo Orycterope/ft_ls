@@ -6,7 +6,7 @@
 #    By: tvermeil <tvermeil@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2016/03/11 16:50:07 by tvermeil          #+#    #+#              #
-#    Updated: 2016/05/20 15:37:12 by tvermeil         ###   ########.fr        #
+#    Updated: 2016/05/27 14:42:49 by tvermeil         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -106,7 +106,6 @@ SRC_NAME =		ft_memset.c \
 				printf/get_string.c \
 				printf/itoa.c \
 				printf/itoa_base.c \
-   		    	ft_putnbr_endl.c \
 
 HEADER_NAME =	libft.h \
 

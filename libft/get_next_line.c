@@ -3,122 +3,122 @@
 /*                                                        :::      ::::::::   */
 /*   get_next_line.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jriallan <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: tvermeil <tvermeil@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2015/12/12 16:31:24 by jriallan          #+#    #+#             */
-/*   Updated: 2016/02/21 22:07:10 by jriallan         ###   ########.fr       */
+/*   Created: 2015/12/08 14:49:57 by tvermeil          #+#    #+#             */
+/*   Updated: 2015/12/12 22:02:48 by tvermeil         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "get_next_line.h"
 
-static int	size_line(char *text, int limit)
+static t_pendant	*get_pendant_fd(int fd, t_pendant *pendant)
 {
-	char *pos;
+	t_pendant	*parser;
 
-	if (text != NULL)
-	{
-		pos = text;
-		while (*pos != '\n' && pos - text < limit)
-			pos++;
-		return (pos - text);
-	}
-	return (0);
+	parser = pendant;
+	while (parser != NULL && parser->fd != fd)
+		parser = parser->next;
+	return (parser);
 }
 
-static int	found_fd(t_file **file, int fd)
+static int			add_pendant_fd(int fd, char *str, t_pendant **pendant)
 {
-	if (*file != NULL)
-	{
-		while ((*file)->next != NULL && (*file)->fd != fd)
-			*file = (*file)->next;
-		if ((*file)->fd == fd)
-			return (1);
-	}
-	return (0);
-}
+	t_pendant	*new;
+	t_pendant	*parser;
 
-static int	init(t_file **file_sav, t_file **file, int fd)
-{
-	t_file			*fil;
-
-	*file = *file_sav;
-	if (fd < 0 || *file == NULL || (*file != NULL && found_fd(file, fd) == 0))
+	new = (t_pendant*)malloc(sizeof(t_pendant));
+	if (new == NULL)
+		return (-1);
+	new->fd = fd;
+	new->str = str;
+	new->next = NULL;
+	if (*pendant == NULL)
 	{
-		if (fd < 0 || (fil = ft_memalloc(sizeof(t_file))) == NULL)
-			return (-1);
-		if ((fil->text = ft_memalloc(sizeof(char) * BUFF_SIZE)) == NULL)
-			return (-1);
-		fil->size_text = 0;
-		fil->fd = fd;
-		fil->next = NULL;
-		if (*file != NULL)
-			(*file)->next = fil;
-		*file = (*file == NULL ? fil : (*file)->next);
+		*pendant = new;
+		return (1);
 	}
-	else if (found_fd(file, fd) == 1 && (*file)->text == NULL)
-	{
-		if (((*file)->text = ft_memalloc(sizeof(char) * BUFF_SIZE)) == NULL)
-			return (-1);
-		(*file)->size_text = 0;
-	}
+	parser = *pendant;
+	while (parser->next != NULL)
+		parser = parser->next;
+	parser->next = new;
 	return (1);
 }
 
-static int	reduce(t_file **file, int size)
+static void			remove_pendant_fd(int fd, t_pendant **pendant)
 {
-	t_file			*fil;
-	char			*add;
+	t_pendant	*lst_parser;
+	t_pendant	*previous;
+	t_pendant	*next;
 
-	fil = *file;
-	if (size_line(fil->text, fil->size_text) == 0 && fil->size_text == 0)
-		fil->size_text = read(fil->fd, fil->text, BUFF_SIZE);
-	if (fil->size_text <= 0 && fil->text != NULL)
-		ft_strdel(&(fil->text));
-	if (fil->size_text <= 0)
-		fil->text = NULL;
-	if (fil->size_text <= 0)
-		return (fil->size_text < 0 ? -1 : 0);
-	while (size_line(fil->text, fil->size_text) >= fil->size_text && size > 0)
+	if (*pendant == NULL)
+		return ;
+	lst_parser = *pendant;
+	previous = NULL;
+	while (lst_parser != NULL)
 	{
-		size = BUFF_SIZE + fil->size_text;
-		if ((add = (char *)malloc(sizeof(char) * size)) == NULL)
-			return (-1);
-		ft_strncpy(add, fil->text, fil->size_text);
-		ft_strdel(&(fil->text));
-		fil->text = add;
-		add += fil->size_text;
-		size = read(fil->fd, add, BUFF_SIZE);
-		fil->size_text += size;
+		next = lst_parser->next;
+		if (lst_parser->fd == fd)
+		{
+			free(lst_parser->str);
+			free(lst_parser);
+			if (previous != NULL)
+				previous->next = next;
+			else
+				*pendant = next;
+			return ;
+		}
+		else
+			previous = lst_parser;
+		lst_parser = next;
 	}
-	return (1);
 }
 
-int			get_next_line(int const fd, char **line)
+static char			*split_str(char *str, int fd, t_pendant **pendant)
 {
-	static t_file	*file = NULL;
-	t_file			*fil;
-	int				s;
-	char			*new;
+	int			i;
+	t_pendant	*previous_pendant;
 
-	if (init(&file, &fil, fd) < 0)
+	previous_pendant = get_pendant_fd(fd, *pendant);
+	i = 0;
+	while (str[i])
+	{
+		if (str[i] == '\n')
+		{
+			add_pendant_fd(fd, ft_strdup(&str[i + 1]), pendant);
+			str[i] = '\0';
+			break ;
+		}
+		i++;
+	}
+	if (previous_pendant != NULL)
+		remove_pendant_fd(fd, pendant);
+	return (str);
+}
+
+int					get_next_line(int const fd, char **line)
+{
+	char				buffer[BUFF_SIZE + 1];
+	char				*join;
+	char				*cpy;
+	int					read_nbr;
+	static t_pendant	*pendant;
+
+	if (line == NULL)
 		return (-1);
-	file = (file == NULL ? fil : file);
-	if ((s = reduce(&fil, 1)) != 1)
-		return (s);
-	s = size_line(fil->text, fil->size_text);
-	if ((new = (char *)malloc(sizeof(char) * (s + 1))) == NULL)
-		return (-1);
-	ft_bzero(new, s + 1);
-	ft_strncpy(new, fil->text, s);
-	*line = new;
-	s = fil->size_text - s - 1;
-	if ((new = (char*)malloc(sizeof(char) * (s > 0 ? s : BUFF_SIZE))) == NULL)
-		return (-1);
-	if (s > 0)
-		ft_strncpy(new, &fil->text[fil->size_text - s], s);
-	ft_strdel(&(fil->text));
-	fil->size_text = s;
-	fil->text = new;
-	return (1);
+	join = NULL;
+	if (get_pendant_fd(fd, pendant) != NULL)
+		join = split_str(ft_strdup(get_pendant_fd(fd, pendant)->str),
+				fd, &pendant);
+	read_nbr = 1;
+	while (get_pendant_fd(fd, pendant) == NULL
+			&& (read_nbr = read(fd, buffer, BUFF_SIZE)) > 0)
+	{
+		buffer[read_nbr] = '\0';
+		cpy = join;
+		join = ft_strjoin(join, split_str(buffer, fd, &pendant));
+		free(cpy);
+	}
+	*line = join;
+	return ((read_nbr > 0) ? 1 : read_nbr);
 }
